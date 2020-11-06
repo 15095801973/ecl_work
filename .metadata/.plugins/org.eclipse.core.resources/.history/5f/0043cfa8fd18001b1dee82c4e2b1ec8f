@@ -1,0 +1,11 @@
+package test;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class helloServiceImp implements helloService{
+	@Override
+    public void sayHello(){
+        System.out.println("Hello World!");
+    }
+}

@@ -1,0 +1,6 @@
+package IOC;
+
+@mycomponent
+public class Person {
+
+}

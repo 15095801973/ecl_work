@@ -1,0 +1,42 @@
+package emp;
+
+import java.util.ArrayList;
+import java.util.Vector;
+
+public class Department {
+	 String id;
+	    String name;
+	    int total;
+	    Employee manager;//部门负责人
+	    ArrayList<Employee> members;//部门成员
+
+	    Department(String id, String name, Employee e){ 
+		//构造函数
+	    	members=new ArrayList<Employee>();
+	    	total=0;
+	    	this.id=id;
+	    	this.name=name;
+	    	manager=e;
+	    }
+	    public void addMember(Employee e){ 
+	    	//增加某个部门成员并设置相应信息  
+	    	members.add(e);
+	    	total+=1;
+	        }
+	        public void showDepartment (){ 
+	    	//显示部门信息
+	        	System.out.println("id: "+id+" name: "+name+" manager: "+manager.name);
+	        }
+	        public void showMembers(){ 
+	    	//显示部门包含的成员信息，会调用到员工类的showEmployee()函数 
+	        	for(Employee e:members) {
+	        		e.showEmployee();
+	        	}
+	        }
+	        public Vector<Employee> getMemberbyName(String name){
+				return null; 
+	    	//根据员工姓名查询       
+	        } 
+
+
+}

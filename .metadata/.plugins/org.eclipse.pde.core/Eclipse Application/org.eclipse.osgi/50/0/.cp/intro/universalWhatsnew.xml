@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<introContent>
+   <extensionContent id="com.yattasolutions.umllab" name="UML Lab"
+      style="universal.css" alt-style="universal.properties" path="whatsnew/@">
+      <group id="umllab-web-group" style-id="content-group">
+         <link label="UML Lab"
+            url="http://www.uml-lab.com"
+            id="umllab-web-link" style-id="umllab-link content-link">
+            <text>Visit us on the UML Lab web site for the latest news and updates</text>
+         </link>
+         <!--
+         <group id="umllab-news" style-id="umllab-feed" label="Latest News" expandable="true" expanded="true">
+            <contentProvider 
+               id="url=http://www.yatta.de/news/category/umllab/rss.xml##welcome_items=5##no_news_url=http://www.uml-lab.com/##no_news_text=www.uml-lab.com" 
+               pluginId="org.eclipse.ui.intro" 
+               class="org.eclipse.ui.intro.contentproviders.EclipseRSSViewer">
+            </contentProvider> 
+         </group>
+         <group id="umllab-changes" style-id="umllab-feed" label="Change Log" expandable="true" expanded="true">
+            <contentProvider id="changeLogContent" class="com.yattasolutions.umllab.intro.ChangeLogContentProvider" pluginId="com.yattasolutions.umllab.intro">
+            </contentProvider>
+         </group>
+         -->
+      </group>
+	</extensionContent>
+</introContent>

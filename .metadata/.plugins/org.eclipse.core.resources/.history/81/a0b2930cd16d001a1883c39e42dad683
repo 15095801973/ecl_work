@@ -1,0 +1,24 @@
+package emp;
+
+public class Employee {
+	 String id;
+	    String name;
+	    char sex; // 或者可以采取随机Random（）函数生成，male=1,female=0 
+	    Performance performance;//业绩
+	    Employee(String eid, String ename, char esex){  //构造函数
+	        id = eid;
+	        name = ename;
+	        sex= esex;
+	}
+	    public void showEmployee (){
+	    	//此函数用于显示员工的信息        
+	    	System.out.println("id: "+id+" name: "+name+" sex: "+sex);
+	    }
+	    public void setPerformance(int s,int a,int b){
+	    	//创建业绩类
+	    	performance=new Performance(s, a, b);
+	    }
+
+	    //根据需求可以增减相应方法
+
+}

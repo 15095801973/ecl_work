@@ -1,0 +1,54 @@
+package test95;
+
+public class t3 {
+	int a;
+	int b;
+	t3(int aa,int bb){
+		a=aa;
+		b=bb;
+	}
+	void show() {
+		System.out.println("a="+a+"\nb="+b);
+	}
+	public static void main(String[] args) {
+		t3 t4 =new t3(1,2);
+		SubClass sClass=new SubClass(11, 12, 13);
+		ssclass ssclass=new ssclass(21, 22, 23);
+		t4.show();
+		sClass.show();
+		ssclass.show();
+		t4=(t3)sClass;
+		t4.show();
+		t4=ssclass;
+		t4.show();
+		System.out.println("a:"+t4.a+"b:"+t4.b);
+		byte x=1;
+		double y=1.0;
+		System.out.println((short)x/y);
+	}
+}
+class SubClass extends t3
+{
+	int c;
+	public SubClass(int aa,int bb,int cc) {
+		// TODO Auto-generated constructor stub
+		super(aa,bb);
+		c=cc;
+	}
+	void show() {
+		System.out.println("a="+a+"\nb="+b+"\nc="+c);
+	}
+}
+class ssclass extends SubClass
+{
+	int a;
+	public ssclass(int aa, int bb, int cc) {
+		super(aa, bb, cc);
+		a=aa+bb+cc;
+		// TODO Auto-generated constructor stub
+	}
+	void show() {
+		System.out.println("a="+a+"\nb="+b+"\nc="+c);
+	}
+	
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<introContent>
+   <extensionContent id="com.yattasolutions.umllab" name="UML Lab"
+		style="universal.css" alt-style="universal.properties" path="tutorials/@">
+      <group label="UML Lab Modeling IDE" id="umllab-content-group" style-id="content-group">
+         <link label="Take the UML Lab Tour"
+            url="http://org.eclipse.ui.intro/showStandby?partId=org.eclipse.platform.cheatsheet&amp;input=com.yattasolutions.umllab.help.cheatsheets.tour"
+            id="umllab-tour-link" style-id="umllab-link content-link">
+            <text>Get familiar with UML Lab by taking the tour.</text>
+         </link>
+         <link label="UML Lab Tutorials"
+            url="http://org.eclipse.ui.intro/showHelpTopic?id=/com.yattasolutions.umllab.help/help/tutorials/overview.xhtml"
+            id="umllab-tutorial-link" style-id="umllab-link content-link">
+            <text>Learn how to get the most out of UML Lab</text>
+         </link>
+      </group>
+	</extensionContent>
+</introContent>

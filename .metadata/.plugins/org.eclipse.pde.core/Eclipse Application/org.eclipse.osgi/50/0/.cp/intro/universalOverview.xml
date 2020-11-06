@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<introContent>
+	<extensionContent id="com.yattasolutions.umllab" name="UML Lab"
+		style="universal.css" alt-style="universal.properties" path="overview/@">
+		<group id="umllab-content-group" style-id="content-group">
+			<link label="UML Lab"
+				url="http://org.eclipse.ui.intro/showStandby?partId=org.eclipse.platform.cheatsheet&amp;input=com.yattasolutions.umllab.help.cheatsheets.tour"
+				id="umllab-tour-link" style-id="umllab-link content-link">
+				<text>Get familiar with UML Lab by taking the tour.</text>
+			</link>
+		</group>
+	</extensionContent>
+</introContent>

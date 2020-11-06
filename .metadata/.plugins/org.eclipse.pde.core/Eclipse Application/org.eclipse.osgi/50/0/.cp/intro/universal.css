@@ -1,0 +1,32 @@
+a.umllab-link img {
+	background-image: url(umllab_48x48.png);
+}
+
+a.umllab-link:hover img {
+	background-image: url(umllab_48x48.png);
+}
+
+div#umllab-changes {
+   position: relative;
+   margin-left: 52px;
+}
+
+div#umllab-news {
+   position: relative;
+   top: -25px;
+   margin-bottom: -25px;
+   margin-left: 52px;
+}
+
+.umllab-feed .div-label {
+   font-size: 9pt;
+}
+
+.umllab-feed .provided-content {
+}
+
+.umllab-feed .status-text {
+   font-weight: normal;
+   color: #909090;
+   font-size: 8pt;
+}

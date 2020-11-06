@@ -1,0 +1,99 @@
+package emp;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.Vector;
+
+
+
+public class Employeesystem {
+	public void Menu(){ //主函数
+		String[] n1= new String[]{"李","王","张","刘","陈","杨","赵","黄","周","吴","徐","孙","胡","朱","高","林","何","郭","马"};
+		String[] n2= new String[]{"一","二","三","四","五","六","七","八","九","十","十一","十二","十三"};
+		String[] n3= new String[]{"bm1","bm2","bm3","bm4","bm5"};
+		int s1=n1.length;int s2=n2.length;
+		int depar_n=n3.length;
+		int em_n=100;//员工数目
+		Random r=new Random();
+		ArrayList<Employee> employee=new ArrayList<Employee>();
+		
+		for (int i = 0; i < em_n; i++) {//生成员工
+			employee.add(new Employee(Integer.toString(i), n1[r.nextInt(s1)]+n2[r.nextInt(s2)], r.nextInt(2)));
+		}
+		Department[] departments=new Department[depar_n];
+		Iterator<Employee>it =employee.iterator();
+		for (int i = 0; i < depar_n; i++) {//生成部门，并分配经理
+			departments[i]=new Department(Integer.toString(i), n3[i], it.next());
+		}
+		for(Employee e:employee) {//为每个员工生成业绩
+			e.setPerformance(r.nextInt(3000), r.nextInt(3000), r.nextInt(3000));
+		}
+		boolean flag=true;
+		while(flag) {//随机分配员工到部门
+			Iterator<Employee>it1 =employee.iterator();
+			for(int i = 0; i < em_n; i++) {
+				if(i<depar_n) {
+					departments[i].addMember(it1.next());
+				}
+				else
+					departments[r.nextInt(depar_n)].addMember(it1.next());
+			}
+			flag=false;
+			for (Department d:departments) {
+				if(d.total<=10)
+					flag=true;
+			}
+		}
+		//首先随机生成100名员工，再分配给相应部门。
+		//可以考虑采用switch分支实现指定功能。1.退出系统；2.显示一个指定部门的员工信息，根据总业绩排序；3.可以通过员工名字查	询业绩等功能。	
+		while(true) {
+			System.out.println("1:退出\n2:显示某部门的员工信息\n3:通过员工名字查询业绩");
+			Scanner input = new Scanner(System.in);
+			int i  = input.nextInt();
+			if(i==1) {break;}
+			switch (i) {
+			case 2: {//显示一个指定部门的员工信息，可以根据总业绩排序
+				System.out.println("部门编号？");
+				int j  = input.nextInt();
+				if(j<depar_n) {
+					Collections.sort(departments[j].members,new Em_com());
+					departments[j].showMembers();
+				}
+				break;
+			}
+			case 3: {//可以通过员工名字查询业绩等功能。
+				System.out.println("员工姓名？");
+				String s=input.next();
+				Vector<Employee> es = new Vector<Employee>();
+				for (int k = 0; k < departments.length; k++) {
+					es = departments[j].getMemberbyName(s);
+					for (Employee e : es) {
+						e.showEmployee();
+				}
+				}
+				break;
+				
+			}
+			default:
+				System.out.print("error");
+				continue;
+			}
+		}
+	}
+class Em_com implements Comparator<Employee>{
+	@Override
+	public int compare(Employee o1, Employee o2) {
+		return o2.performance.get_total()-o1.performance.get_total();
+	}
+}
+public static void main(String[] args) {
+	
+Employeesystem employeesystem=new Employeesystem();
+employeesystem.Menu();
+}
+}

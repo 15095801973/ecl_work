@@ -1,0 +1,7 @@
+package test;
+
+public class helloServiceImpl implements helloService{
+    public void sayHello(){
+        System.out.println("Hello World!");
+    }
+}

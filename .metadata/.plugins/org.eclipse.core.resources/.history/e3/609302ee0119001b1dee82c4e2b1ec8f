@@ -1,0 +1,8 @@
+package testAnna;
+
+public class hello {
+	public void say() {
+		@Interceptor
+		System.out.println("hello");
+	}
+}

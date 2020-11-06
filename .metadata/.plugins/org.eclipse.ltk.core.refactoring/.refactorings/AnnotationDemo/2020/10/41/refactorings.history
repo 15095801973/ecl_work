@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;DaoProxy.java&apos; to &apos;dao&apos;&#x0D;&#x0A;- Original project: &apos;AnnotationDemo&apos;&#x0D;&#x0A;- Destination element: &apos;dao&apos;&#x0D;&#x0A;- Original element: &apos;DaoProxy.java&apos;" description="Copy file" element1="src/main/java/cn/edu/cqu/annotation/dao/DaoProxy.java" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1602308440743" target="/mycas/src/main/java/dao" units="0" version="1.0"/>
+</session>

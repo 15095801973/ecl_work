@@ -1,0 +1,15 @@
+package IOC;
+
+import IOC.myautowired;
+import IOC.mycomponent;
+import testAnna.Interceptor;
+
+@mycomponent
+@Interceptor
+public class Person {
+	public String name;
+	@myautowired
+	void setName(String s) {
+		name=s;
+	}
+}

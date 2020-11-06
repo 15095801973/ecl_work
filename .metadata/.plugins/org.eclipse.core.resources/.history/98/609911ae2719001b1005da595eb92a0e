@@ -1,0 +1,9 @@
+package IOC;
+
+import IOC.myautowired;
+import IOC.mycomponent;
+@mycomponent
+public class Person {
+	@myautowired
+	String name;
+}

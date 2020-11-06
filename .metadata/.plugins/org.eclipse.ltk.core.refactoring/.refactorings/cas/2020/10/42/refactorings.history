@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;LogoutController.java&apos; to &apos;controllers&apos;&#x0D;&#x0A;- Original project: &apos;cas&apos;&#x0D;&#x0A;- Destination element: &apos;controllers&apos;&#x0D;&#x0A;- Original element: &apos;controllers.LogoutController.java&apos;" description="Copy compilation unit" element1="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;controllers{LogoutController.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1602398643557" target="/2/mycas/src/main/java/controllers" units="1" version="1.0"/>
+</session>

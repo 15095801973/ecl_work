@@ -1,0 +1,11 @@
+package testAnna;
+
+import cn.edu.cqu.annotation.Person;
+import cn.edu.cqu.annotation.PersonProxy;
+
+public class Demo1 {
+public static void main(String[] args) {
+	hello h = new hello();
+	h.say();
+}
+}

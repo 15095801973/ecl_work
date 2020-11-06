@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><?eclipse version="3.4"?><plugin>
+   <extension point="com.yattasolutions.umllab.licensingFrontendProvider">
+      <licensingFrontendProvider class="com.yattasolutions.obf.oa.d">
+      </licensingFrontendProvider>
+   </extension>
+   <extension point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
+      <propertyContributor contributorId="com.yattasolutions.umllab.views.treeview">
+         <propertyCategory/>
+      </propertyContributor>
+   </extension>
+   <extension point="org.eclipse.ui.bindings">
+   </extension>
+   <extension point="org.eclipse.ui.newWizards">
+      <category id="com.yattasolutions.umllab.category" name="UML Lab">
+      </category>
+   </extension>
+   <extension point="org.eclipse.ui.contexts">
+      <context description="Base context for UML Lab" id="com.yattasolutions.umllab.window.context" name="UML Lab Context" parentId="org.eclipse.ui.contexts.window">
+      </context>
+   </extension>
+   <extension point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="com.yattasolutions.umllab.perspective">
+         <view closeable="true" id="org.eclipse.pde.runtime.LogView" minimized="false" moveable="true" relationship="stack" relative="org.eclipse.ui.views.ProblemView" showTitle="true" visible="true">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view id="com.yattasolutions.umllab.views.treeview" ratio="0.7" relationship="bottom" relative="org.eclipse.jdt.ui.PackageExplorer">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension point="org.eclipse.ui.preferencePages">
+      <page class="com.yattasolutions.obf.oj.d" id="com.yattasolutions.umllab.PreferencePage" name="UML Lab">
+      </page>
+      <page category="com.yattasolutions.umllab.PreferencePage" class="com.yattasolutions.obf.od.b" id="com.yattasolutions.umllab.licensing.PreferencePage" name="Product License">
+      </page>
+   </extension>
+   <extension point="org.eclipse.ui.views">
+      <category id="com.yattasolutions.umllab" name="UML Lab">
+      </category>
+      <view allowMultiple="true" category="com.yattasolutions.umllab" class="com.yattasolutions.obf.os.g" icon="icons/YattaLogo_16x16.png" id="com.yattasolutions.umllab.views.treeview" name="UML Lab Tree" restorable="true">
+      </view>
+   </extension>
+   <extension point="org.eclipse.ui.popupMenus">
+      <objectContribution adaptable="false" id="com.yattasolutions.umllab.umldefaults.direct" objectClass="org.eclipse.uml2.uml.Element">
+         <action definitionId="org.eclipse.ui.edit.delete" id="com.yattasolutions.umllab.action.delete" label="Delete">
+               <class class="com.yattasolutions.obf.nw.c">
+	               <parameter name="com.yattasolutions.codegen.reverse.ui.iconPath" value="platform:/plugin/org.eclipse.ui/icons/full/etool16/delete">
+	        	   </parameter>
+               </class>
+         </action>
+      </objectContribution>
+      <objectContribution adaptable="false" id="com.yattasolutions.umllab.umldefaults.direct" objectClass="org.eclipse.uml2.uml.NamedElement">
+         <action class="com.yattasolutions.obf.nw.d" definitionId="org.eclipse.ui.edit.rename" enablesFor="1" id="com.yattasolutions.umllab.actions.RenameAction" label="Rename" menubarPath="additions">
+         </action>
+      </objectContribution>
+   </extension>
+   <extension point="org.eclipse.ui.commands">
+      <command defaultHandler="com.yattasolutions.obf.nx.c" id="com.yattasolutions.umllab.loadResourcesCommand" name="Load resources...">
+      </command>
+      <command defaultHandler="com.yattasolutions.obf.nx.a" id="com.yattasolutions.umllab.closeModelCommand" name="Close Model">
+            <commandParameter id="com.yattasolutions.codegen.reverse.ui.iconPath" name="iconPathParam">
+            </commandParameter>
+      </command>
+      <command defaultHandler="com.yattasolutions.obf.nx.b" description="Enable sorting" id="com.yattasolutions.umllab.ui.views.treeview.toggleSortingCommand" name="Sort">
+         <state class="org.eclipse.ui.handlers.RegistryToggleState:true" id="org.eclipse.ui.commands.toggleState">
+         </state>
+      </command>
+   </extension>
+   <extension point="org.eclipse.ui.perspectives">
+      <perspective class="com.yattasolutions.obf.os.f" icon="icons/YattaLogo_16x16.png" id="com.yattasolutions.umllab.perspective" name="UML Lab">
+      </perspective>
+   </extension>
+   <extension point="org.eclipse.ui.menus">
+      <menuContribution locationURI="menu:org.eclipse.ui.main.menu">
+         <menu id="com.yattasolutions.umllab.main.menu" label="UML Lab" mnemonic="U">
+            <separator name="category.model" visible="true">
+            </separator>
+            <separator name="category.editor" visible="true">
+            </separator>
+            <separator name="additions" visible="false">
+            </separator>
+            <separator name="category.code" visible="true">
+            </separator>
+         </menu>
+      </menuContribution>
+       <menuContribution allPopups="false" locationURI="menu:help?after=tipsAndTricks">
+            <command commandId="com.yattasolutions.umllab.ui.showRegistration" icon="icons/YattaLogo_16x16.png" label="Register UML Lab..." style="push">
+                <visibleWhen checkEnabled="false">
+                    <not>
+                        <test property="com.yattasolutions.platform.marketplace.client.account.isLoggedIn">
+                        </test>
+                    </not>
+                </visibleWhen>
+            </command>
+      </menuContribution>
+      <menuContribution locationURI="popup:com.yattasolutions.umllab.views.treeview">
+         <command commandId="com.yattasolutions.umllab.loadResourcesCommand" style="push">
+         </command>
+         <command commandId="com.yattasolutions.umllab.closeModelCommand" label="Close Model" style="push">
+            <parameter name="com.yattasolutions.codegen.reverse.ui.iconPath" value="platform:/plugin/org.eclipse.ui/icons/full/elcl16/remove">
+            </parameter>
+            <visibleWhen checkEnabled="false">
+               <or>
+                  <adapt type="org.eclipse.uml2.uml.Element">
+                     <instanceof value="org.eclipse.uml2.uml.Package">
+                     </instanceof>
+                     <test property="com.yattasolutions.umllab.uml.isRootPackage">
+                     </test>
+                  </adapt>
+                  <adapt type="java.util.Collection">
+                     <iterate ifEmpty="false" operator="and">
+                        <adapt type="org.eclipse.uml2.uml.Element">
+                           <instanceof value="org.eclipse.uml2.uml.Package">
+                           </instanceof>
+                           <test property="com.yattasolutions.umllab.uml.isRootPackage">
+                           </test>
+                        </adapt>
+                     </iterate>
+                  </adapt>
+               </or>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution allPopups="false" locationURI="toolbar:com.yattasolutions.umllab.views.treeview">
+         <command commandId="com.yattasolutions.umllab.ui.views.treeview.toggleSortingCommand" disabledIcon="icons/alphab_sort_co_disabled.png" icon="icons/alphab_sort_co.png" style="toggle">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension point="org.eclipse.ui.startup">
+      <startup class="com.yattasolutions.obf.oq.a">
+      </startup>
+      <startup class="com.yattasolutions.obf.oe.a">
+      </startup>
+      <startup class="com.yattasolutions.obf.oe.b">
+      </startup>
+      <startup class="com.yattasolutions.umllab.ui.intro.RSSContentProvider">
+      </startup>
+   </extension>
+   <extension point="org.eclipse.ui.navigator.navigatorContent">
+      <navigatorContent activeByDefault="true" contentProvider="com.yattasolutions.obf.os.h" icon="icons/YattaLogo_16x16.png" id="com.yattasolutions.umllab.umlModelContent" labelProvider="com.yattasolutions.obf.os.i" name="UML Lab Model Content" priority="normal" providesSaveables="true">
+         <triggerPoints>
+            <or>
+              <instanceof value="org.eclipse.uml2.uml.Element">
+              </instanceof>
+              <instanceof value="com.yattasolutions.umllab.managers.i">
+              </instanceof>
+            </or>
+         </triggerPoints>
+         <possibleChildren>
+            <instanceof value="org.eclipse.uml2.uml.Element">
+            </instanceof>
+         </possibleChildren>
+         <dropAssistant class="com.yattasolutions.obf.os.g$b" id="com.yattasolutions.umllab.tree.drop">
+            <possibleDropTargets>
+               <instanceof value="org.eclipse.uml2.uml.Element">
+               </instanceof></possibleDropTargets>
+         </dropAssistant>
+      </navigatorContent>
+      <commonFilter activeByDefault="false" id="com.yattasolutions.umllab.filters.workspaceProfilefilter" name="Workspace Profiles" visibleInUI="true">
+         <filterExpression>
+            <adapt type="org.eclipse.uml2.uml.Element">
+               <instanceof value="org.eclipse.uml2.uml.Package">
+               </instanceof>
+               <and>
+                  <test property="com.yattasolutions.umllab.uml.isProfile">
+                  </test>
+                  <test property="com.yattasolutions.umllab.uml.isWorkspaceResource">
+                  </test>
+               </and>
+            </adapt>
+         </filterExpression>
+      </commonFilter>
+      <commonFilter activeByDefault="true" id="com.yattasolutions.umllab.filters.systemProfilefilter" name="System Profiles" visibleInUI="true">
+         <filterExpression>
+            <adapt type="org.eclipse.uml2.uml.Element">
+               <instanceof value="org.eclipse.uml2.uml.Package">
+               </instanceof>
+               <and>
+                  <test property="com.yattasolutions.umllab.uml.isProfile">
+                  </test>
+                  <not>
+                     <test property="com.yattasolutions.umllab.uml.isWorkspaceResource">
+                     </test>
+                  </not>
+               </and>
+            </adapt>
+         </filterExpression>
+      </commonFilter>
+      <commonFilter activeByDefault="true" id="com.yattasolutions.umllab.filters.modelLibraryFilter" name="ModelLibrary" visibleInUI="true">
+         <filterExpression>
+            <adapt type="org.eclipse.uml2.uml.Element">
+               <instanceof value="org.eclipse.uml2.uml.Package">
+               </instanceof>
+               <test property="com.yattasolutions.umllab.uml.isModelLibrary">
+               </test>
+            </adapt>
+         </filterExpression>
+      </commonFilter>
+      <commonFilter activeByDefault="true" id="com.yattasolutions.umllab.filters.metaModelFilter" name="Metamodel" visibleInUI="true">
+         <filterExpression>
+            <adapt type="org.eclipse.uml2.uml.Element">
+               <instanceof value="org.eclipse.uml2.uml.Package">
+               </instanceof>
+               <test property="com.yattasolutions.umllab.uml.isMetamodel">
+               </test>
+            </adapt>
+         </filterExpression>
+      </commonFilter>
+   </extension>
+   <extension point="org.eclipse.ui.navigator.viewer">
+      <viewer helpContext="com.yattasolutions.umllab.viewer" viewerId="com.yattasolutions.umllab.views.treeview">
+         <options>
+            <property name="org.eclipse.ui.navigator.hideLinkWithEditorAction" value="true">
+            </property>
+         </options>
+      </viewer>
+      <viewerContentBinding viewerId="com.yattasolutions.umllab.views.treeview">
+         <includes>
+            <contentExtension isRoot="true" pattern="com.yattasolutions.umllab.*">
+            </contentExtension>
+         </includes>
+      </viewerContentBinding>
+      <dragAssistant class="com.yattasolutions.obf.os.g$a" viewerId="com.yattasolutions.umllab.views.treeview">
+      </dragAssistant>
+   </extension>
+   <extension point="org.eclipse.ui.propertyPages">
+      <page class="com.yattasolutions.obf.ok.b" id="com.yattasolutions.umllab.PropertyPage" name="UML Lab">
+         <enabledWhen>
+            <and>
+               <or>
+                  <adapt type="org.eclipse.core.resources.IProject">
+                  </adapt>
+                  <adapt type="org.eclipse.core.resources.IFile">
+                     <test args="kindOf" property="org.eclipse.core.resources.contentTypeId" value="org.eclipse.uml2.uml">
+                     </test>
+                  </adapt>
+               </or>
+               <test property="com.yattasolutions.umllab.ui.licensing.usagePolicy" value="de.yatta.feature.roundtrip | de.yatta.feature.emf">
+               </test>
+            </and>
+         </enabledWhen>
+      </page>
+   </extension>
+   <extension point="org.eclipse.ui.actionSets">
+      <actionSet id="com.yattasolutions.umllab.registrationActionSet" label="UML Lab Registration action set" visible="true">
+         <action class="com.yattasolutions.obf.om.e" icon="icons/YattaLogo_16x16.png" id="com.yattasolutions.umllab.feedbackform" label="UML Lab Feedback..." menubarPath="help/helpStart" style="push">
+         </action>
+      </actionSet>
+   </extension>
+   <extension point="org.eclipse.core.runtime.adapters">
+      <factory adaptableType="org.eclipse.emf.ecore.resource.ResourceSet" class="com.yattasolutions.obf.on.k">
+         <adapter type="org.eclipse.ui.ISaveablesSource">
+         </adapter>
+      </factory>
+      <factory adaptableType="org.eclipse.emf.ecore.resource.Resource" class="com.yattasolutions.obf.on.e">
+         <adapter type="org.eclipse.ui.Saveable">
+         </adapter>
+      </factory>
+   </extension>
+   <extension point="org.eclipse.ui.ide.markerResolution">
+      <markerResolutionGenerator class="com.yattasolutions.obf.or.g" markerType="umllab.problem">
+      </markerResolutionGenerator>
+   </extension>
+   <extension point="com.yattasolutions.umllab.errorManagerFrontend">
+      <errorManagerFrontend class="com.yattasolutions.obf.of.a">
+      </errorManagerFrontend>
+   </extension>
+   <extension point="com.yattasolutions.umllab.closeResourceFrontend">
+      <closeResourceFrontend class="com.yattasolutions.obf.og.a">
+      </closeResourceFrontend>
+   </extension>
+   <extension point="com.yattasolutions.umllab.updateNotificationFrontend">
+      <updateNotificationFrontend class="com.yattasolutions.obf.oo.a">
+      </updateNotificationFrontend>
+   </extension>
+   <extension point="com.yattasolutions.umllab.synchronizationDelegateFrontend">
+      <synchronizationDelegateFrontend class="com.yattasolutions.obf.on.h">
+      </synchronizationDelegateFrontend>
+   </extension>
+   <extension point="com.yattasolutions.umllab.resourceSetInitializer">
+      <resourceSetInitializer class="com.yattasolutions.obf.on.f">
+      </resourceSetInitializer>
+   </extension>
+   <extension point="com.yattasolutions.umllab.operationManagerFrontend">
+      <operationManagerFrontend class="com.yattasolutions.obf.og.b">
+      </operationManagerFrontend>
+   </extension>
+   <extension point="com.yattasolutions.umllab.umlAdapterFactory">
+      <umlAdapterFactory class="org.eclipse.uml2.uml.edit.providers.UMLResourceItemProviderAdapterFactory">
+      </umlAdapterFactory>
+   </extension>
+   <extension point="com.yattasolutions.umllab.umlAdapterFactory">
+      <umlAdapterFactory class="org.eclipse.uml2.uml.edit.providers.UMLItemProviderAdapterFactory">
+      </umlAdapterFactory>
+   </extension>
+   <extension point="com.yattasolutions.umllab.umlAdapterFactory">
+      <umlAdapterFactory class="org.eclipse.uml2.uml.edit.providers.UMLReflectiveItemProviderAdapterFactory">
+      </umlAdapterFactory>
+   </extension>
+   <extension point="com.yattasolutions.umllab.editingDomainInitializer">
+      <editingDomainInitializer class="com.yattasolutions.obf.on.b">
+      </editingDomainInitializer>
+   </extension>
+   <extension point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester class="com.yattasolutions.obf.oa.e" id="com.yattasolutions.umllab.ui.licensing.UsagePolicyTester" namespace="com.yattasolutions.umllab.ui.licensing" properties="usagePolicy" type="java.lang.Object">
+      </propertyTester>
+   </extension>
+    <extension point="org.eclipse.ui.intro.configExtension">
+       <configExtension configId="org.eclipse.ui.intro.universalConfig" content="intro/universalOverview.xml">
+       </configExtension>
+       <configExtension configId="org.eclipse.ui.intro.universalConfig" content="intro/universalTutorials.xml">
+       </configExtension>
+       <configExtension configId="org.eclipse.ui.intro.universalConfig" content="intro/universalWhatsnew.xml">
+       </configExtension>
+    </extension>
+    <extension point="com.yattasolutions.umllab.lockHandler">
+       <lockHandler class="com.yattasolutions.obf.op.h">
+       </lockHandler>
+    </extension>
+    <extension point="org.eclipse.core.runtime.preferences">
+      <initializer class="com.yattasolutions.obf.oj.c">
+      </initializer>
+   </extension>
+    <extension point="com.yattasolutions.umllab.operationFactories">
+       <FactoryAssignment Factory="com.yattasolutions.obf.oi.a$a" ParameterClass="com.yattasolutions.obf.nf.b$b" name="UIDeleteOperation" overrides="com.yattasolutions.obf.nf.b$a">
+       </FactoryAssignment>
+    </extension>
+    <extension point="org.eclipse.ui.handlers">
+        <handler class="com.yattasolutions.obf.om.f" commandId="com.yattasolutions.umllab.ui.showRegistration">
+        </handler>
+    </extension>
+</plugin>

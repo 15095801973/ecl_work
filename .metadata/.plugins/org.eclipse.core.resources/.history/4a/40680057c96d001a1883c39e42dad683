@@ -1,0 +1,17 @@
+package emp;
+
+import java.util.ArrayList;
+
+public class Department {
+	 String id;
+	    String name;
+	    int total;
+	    Employee manager;//部门负责人
+	    ArrayList<Employee> members;//部门成员
+
+	    Department(String id, String name, Employee e){ 
+		//构造函数
+	    }
+	    
+
+}

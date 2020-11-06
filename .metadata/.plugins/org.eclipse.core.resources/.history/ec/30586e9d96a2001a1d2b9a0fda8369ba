@@ -1,0 +1,83 @@
+package Socket;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.SocketException;
+
+import javax.swing.JOptionPane;
+
+import Basic_Shape.graphics;
+
+public class ServerThread extends Thread {
+
+	public Socket socket;
+	public ObjectInputStream dis = null;
+	public ObjectOutputStream dos = null;
+	public graphics gra = new graphics();
+
+	public ServerThread(Socket socket) {
+		this.socket = socket;
+	}
+
+	public void run() {
+		try {
+			//获取输入输出流
+			OutputStream ous = socket.getOutputStream();
+			InputStream ins = socket.getInputStream();	
+			ObjectOutputStream dos = new ObjectOutputStream(ous);
+			
+			while(true){
+				try {
+
+					ObjectInputStream dis = new ObjectInputStream (ins);
+					graphics gra=new graphics();
+				gra =(graphics) dis.readObject();
+//				System.out.println(value);
+				//服务器转发消息
+
+				Thread.sleep(100);
+
+				for (int i = 0; i <Myserver.list.size(); i++) {
+					ServerThread st =Myserver.list.get(i);
+				if(st!=this){
+					System.out.println("sever:"+Myserver.list.size());
+					System.out.println("gra:"+gra.len);
+					if(gra!=null) {
+					st.dos.writeObject(gra);
+					st.dos.flush();
+					}
+					System.out.println("sendover");
+				}
+						
+				}
+//				System.out.println("服务器已经发送消息");
+			}
+				finally {
+					
+				}
+				}
+		}catch (SocketException e) {
+			try {
+				Myserver.list.remove(this);
+				this.socket.close();
+				System.out.println("客户端已经退出......");
+//				JOptionPane.showMessageDialog(null, "客户端退出！");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+//			e.printStackTrace();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}

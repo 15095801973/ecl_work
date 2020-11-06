@@ -1,0 +1,102 @@
+package Socket;
+
+import java.awt.Graphics;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+
+import Basic_Shape.*;
+
+public class Client {
+	public Socket socket;
+	public graphics gra = new graphics(); // 用于传输的已画图形
+	//public graphics gra2 = new graphics(); // 用于传输的已画图形
+	private Painter_UI paint = new Painter_UI(); // 实例化paint
+	private Graphics g; // 画笔
+
+	public Client() {
+		try {
+			socket = new Socket("localhost", 9090);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void initClient() {
+		paint.setgr(gra);
+		paint.init_Painter();
+		//g = paint.getGr();
+	}
+
+	public void receive_data()
+	{new Thread(){
+		public void run() {
+			try {
+			while(true){
+				InputStream ins = socket.getInputStream();
+				// 将字节流包装成数据流
+				System.out.println("success2");
+				ObjectInputStream dis = new ObjectInputStream(ins);
+			System.out.println("success0");
+						Thread.sleep(100);
+						System.out.println("success2.5");
+					gra = (graphics) dis.readObject();
+					System.out.println("success3");
+					gra.draw_All(g);
+					System.out.println("success3");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+
+	}
+	}.start();
+	}
+
+	public void send_data() {
+
+			try {
+				// 获取输入输出流
+				OutputStream ous = socket.getOutputStream();
+			
+				
+				// 将字节流包装成数据流
+				ObjectOutputStream dos = new ObjectOutputStream(ous);
+				// 写图形类型
+					//if (paint.getFlag()) {
+				gra= paint.getGr();
+						System.out.println("send2");
+						dos.writeObject(gra);
+						dos.flush();
+						System.out.println("send...");
+						paint.setFlag();
+					//}
+			} catch (Exception e) {
+				e.printStackTrace();
+			
+			}
+		}
+
+	public static void main(String[] args) throws IOException, InterruptedException {
+		Client client = new Client();
+		client.initClient();
+		//Client client2 = new Client();
+		//client2.initClient();
+		client.receive_data();
+		//t2.setPriority(Thread.MAX_PRIORITY);
+		while(true) {
+			
+			Thread.sleep(3000);
+			client.send_data();
+		}
+	}
+
+}

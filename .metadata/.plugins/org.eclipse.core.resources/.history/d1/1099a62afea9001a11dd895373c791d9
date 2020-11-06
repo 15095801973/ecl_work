@@ -1,0 +1,22 @@
+package test95;
+
+public class t3 {
+	static int a;
+	static int b;
+	t3(int aa,int bb){
+		a=aa;
+		b=bb;
+	}
+	public static void main(String[] args) {
+		System.out.println("a="+a+"\b="+b);
+	}
+}
+class SubClass extends t3
+{
+	int c;
+	public SubClass(int aa,int bb,int cc) {
+		// TODO Auto-generated constructor stub
+		super(aa,bb);
+		c=cc;
+	}
+}

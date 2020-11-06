@@ -1,0 +1,51 @@
+package emp;
+
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.Vector;
+
+
+
+public class Employeesystem {
+	public static void Menu(){ //主函数
+		String[] n1= new String[]{"李","王","张","刘","陈","杨","赵","黄","周","吴","徐","孙","胡","朱","高","林","何","郭","马"};
+		String[] n1= new String[]{"一","二","三","四","五","六","七","八","九","十","十一","十二","十三"}
+		Random r=new Random();
+		ArrayList<Employee> employee=new ArrayList<Employee>();
+		int s1=n1.length;int s2
+		for (int i = 0; i < 100; i++) {
+			employee.add(new Employee(i, n1[r.nextInt()]+, r.nextInt(2)));
+		}
+		//首先随机生成100名员工，再分配给相应部门。
+		//可以考虑采用switch分支实现指定功能。1.退出系统；2.显示一个	指定部门的员工信息，可以根据总业绩排序；3.可以通过员工名字查	询业绩等功能。	
+		while(true) {
+			Scanner input = new Scanner(System.in);
+			int i  = input.nextInt();
+			if(i==1) {break;}
+			switch (i) {
+			case 2: {//显示一个指定部门的员工信息，可以根据总业绩排序
+				int j  = input.nextInt();
+				break;
+			}
+			case 3: {//可以通过员工名字查询业绩等功能。
+				break;
+			}
+			default:
+				System.out.print("error");
+				continue;
+			}
+			input.close();
+		}
+	}
+	int comparetor(Employee a,Employee b) {
+		if(a.performance.total>b.performance.total) {
+			return 1;
+		}
+		else return 0;
+	}
+public static void main(String[] args) {
+	
+
+}
+}

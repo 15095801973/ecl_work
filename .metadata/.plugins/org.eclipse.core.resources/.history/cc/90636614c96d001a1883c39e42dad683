@@ -1,0 +1,14 @@
+package emp;
+
+public class Employee {
+	 String id;
+	    String name;
+	    char sex; // 或者可以采取随机Random（）函数生成，male=1,female=0 
+	    Performance performance;//业绩
+	    Employee(String eid, String ename, char esex){  //构造函数
+	        id = eid;
+	        name = ename;
+	        sex= esex;
+	}
+
+}

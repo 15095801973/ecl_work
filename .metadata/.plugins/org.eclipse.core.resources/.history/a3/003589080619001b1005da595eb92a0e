@@ -1,0 +1,15 @@
+package testAnna;
+
+public class hello {
+	public String name;
+	
+	public hello(String name) {
+		super();
+		this.name = name;
+	}
+	@Interceptor
+	public void say() {
+		
+		System.out.println("hello");
+	}
+}

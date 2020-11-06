@@ -1,0 +1,17 @@
+package emp;
+
+public class Performance {
+	int salary;
+    int allowance;
+    int bonus;
+    int total;
+    Performance(int s, int a, int b){
+  	//构造函数     
+    	salary=s;
+    	allowance=a;
+    	bonus=b;
+    	total=s+a+b;
+    }
+//其他方法
+
+}
