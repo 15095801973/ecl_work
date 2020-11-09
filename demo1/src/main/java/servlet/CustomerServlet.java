@@ -100,6 +100,9 @@ public class CustomerServlet{
 				method.setAccessible(true);
 				method.invoke(obj, request);
 				}
+				else {//返回404页面
+					doHtml(request, "/noFound.html");
+				}
 			} catch (IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -108,6 +111,10 @@ public class CustomerServlet{
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
 				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println("can not found /noFound.html");
 				e.printStackTrace();
 			}
 	

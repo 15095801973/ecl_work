@@ -21,11 +21,13 @@ public class Person2 {
 	public void setName(String name) {
 		this.name=name;
 	}
+	//value 暂时没有用到
 	@myaction(value = "get:/A_1")
 	public void test() {
 		System.out.println("Person.test()");
 		System.out.println(name);
 	}
+	//value 暂时没有用到
 	@myaction(value = "get:/A_1")
 	private void login(Request request) {
 		System.out.println("logging");
