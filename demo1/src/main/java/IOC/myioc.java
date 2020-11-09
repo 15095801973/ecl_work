@@ -15,9 +15,6 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.springframework.web.bind.annotation.InitBinder;
-
-import net.sf.cglib.proxy.MethodInterceptor;
 
 public class myioc {
 
@@ -25,13 +22,21 @@ public class myioc {
 	public static HashMap<String, HashMap<String,String>> propertyFact =new HashMap<String, HashMap<String,String>>();
 	public static void Init() {
 		try {
-			loadclasslist=load_file("src/main/resources/beans.xml");
+			HashMap<String, Class> loadclasslist=load_file("src/main/resources/beans.xml");
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		Autowired();
+		try {
+			Autowired();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static void main(String[] args)  {

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
+<!-- IOC注入 -->
 <mybeans>
 <mybean id="id" class="IOC.Person">
 <property name="name" value="lisa"/>
 </mybean>
+
+<!-- servlet 映射 -->
+<maps>
+<map value="/login" class="IOC.Person2" method="login" />
+</maps>
 </mybeans>
