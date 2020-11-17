@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -70,6 +71,7 @@ public class CustomerServlet{
 	public void doPost(Request request) {
 		// 获取请求的URI地址信息
         String url=request.getHeader(0).split(" ")[1];
+        url=urlutl(request, url);
 		// 截取其中的方法名
 		String methodName = url;//.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
 		System.out.println("doPost::methodName="+methodName);
@@ -228,9 +230,19 @@ public class CustomerServlet{
 		pw.flush();
 		pw.close();
 	}
+	public static void doJson(Request request,String content) throws UnsupportedEncodingException {
+    	//name即是html地址
+        PrintWriter writer=new PrintWriter(new OutputStreamWriter(request.getOutputStream()));
+        writer.println("HTTP/1.1 200 OK");
+        writer.println("Content-Type: text/html;charset=UTF-8");
+        writer.println("Content-Length:"+content.getBytes("UTF-8").length);
+        writer.println();
+        writer.print(content);
+        writer.flush();
+        writer.close();
+	}
 	public static void doHtml(Request request,String name) throws IOException {
-//    	request.printHeader();
-    	//name即是url地址
+    	//name即是html地址
         String content=loadHtml(name);
         PrintWriter writer=new PrintWriter(new OutputStreamWriter(request.getOutputStream()));
         writer.println("HTTP/1.1 200 OK");
@@ -242,6 +254,7 @@ public class CustomerServlet{
         writer.close();
 
     }
+
 	public static String loadHtml(String name) throws IOException {
         BufferedReader reader=new BufferedReader(new InputStreamReader(HttpThread.class.getResourceAsStream(name)));
         StringBuffer buffer=new StringBuffer();
@@ -255,5 +268,27 @@ public class CustomerServlet{
         return buffer.toString();
 
     }
+
+	public static String urlutl(Request request,String url) {
+		url=url.trim();
+		if(url.equals("")) {
+			System.out.println("urlpats为空");
+			return null;
+		}
+		String[] urlParts = url.split("\\?");
+		request.setBaseUrl(urlParts[0]);
+		HashMap<String, String> parmsMap=new HashMap<String, String>();
+		if(urlParts.length == 1) {
+		//有参数
+		String[] parms = urlParts[1].split("&");
+		for(String parm : parms) {
+			String[] keyValue = parm.split("=");
+			parmsMap.put(keyValue[0], keyValue[1]);
+		}
+		}
+		//没有参数也设置个空的,
+		request.setParams(parmsMap);
+		return urlParts[0];
+	}
 
 }

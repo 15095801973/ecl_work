@@ -8,5 +8,6 @@
 <!-- servlet 映射 -->
 <maps>
 <map value="/login" class="IOC.Person2" method="login" />
+<map value="/action" class="IOC.actionController" method="action"/>
 </maps>
 </mybeans>

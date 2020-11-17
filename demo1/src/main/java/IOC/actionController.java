@@ -7,6 +7,7 @@ import servlet.CustomerServlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +17,7 @@ import IOC.myaction;
 import testAnna.Interceptor;
 
 @mycontroller
-public class Person2 {
+public class actionController {
 	public String name;
 	public void setName(String name) {
 		this.name=name;
@@ -24,17 +25,26 @@ public class Person2 {
 	//value 暂时没有用到
 	@myaction(value = "get:/A_1")
 	public void test() {
-		System.out.println("Person.test()");
+		System.out.println("action.test()");
 		System.out.println(name);
 	}
 	//value 暂时没有用到
 	@myaction(value = "get:/A_1")
-	private void login(Request request) {
-		System.out.println("logging");
+	private void action(Request request) {
+		System.out.println("action ...\n");
+		
 		try {
-			CustomerServlet.doJson(request, "/hello.html");
+			String nameString = request.getParms("name");
+			System.out.println("nameString = "+nameString);
+			CustomerServlet.doHtml(request, "/hello.html");
 		} catch (IOException e) {
-			System.out.println("html failed");
+			System.out.println("action failed");
+			try {
+				CustomerServlet.doJson(request, "404");
+			} catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
