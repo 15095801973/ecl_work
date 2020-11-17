@@ -24,7 +24,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
 @mycontroller
-public class uploadController {
+public class uploadController2 {
 	public String name;
 	public void setName(String name) {
 		this.name=name;
@@ -33,10 +33,10 @@ public class uploadController {
 	//value 暂时没有用到
 	@myaction(value = "get:/A_1")
 	private void get(Request request) {
-		System.out.println("upload: get ...\n");
+		System.out.println("upload2: get ...\n");
 		
 		try {
-			CustomerServlet.doHtml(request, "/upload.html");
+			CustomerServlet.doHtml(request, "/upload2.html");
 		} catch (IOException e) {
 			System.out.println("action failed");
 			try {
@@ -51,8 +51,8 @@ public class uploadController {
 	}
 	@myaction(value = "post")
 	private void post(Request request) throws IOException {
-		CustomerServlet.doJson(request, "post succeed");
 		
+		CustomerServlet.doJson(request, "upload 2 post succeed");
 	}
 	private void action(Request request) {
 		

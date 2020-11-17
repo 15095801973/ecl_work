@@ -11,7 +11,9 @@ public class Request {
     private InputStream inputStream;
     private OutputStream outputStream;
     private String BaseUrl;
-    private HashMap<String, String> params;
+    private HashMap<String, String> params;//url里面的属性
+    private HashMap<String, String> attributes;//HTTP Body里面的属性
+    private int Content_Length;
 
     public InputStream getInputStream() {
         return inputStream;
@@ -54,5 +56,21 @@ public class Request {
 	}
 	public String getParms(String key) {
 		return params.get(key);
+	}
+
+	public int getContent_Length() {
+		return Content_Length;
+	}
+
+	public void setContent_Length(int content_Length) {
+		Content_Length = content_Length;
+	}
+
+	public HashMap<String, String> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(HashMap<String, String> attributes) {
+		this.attributes = attributes;
 	}
 }

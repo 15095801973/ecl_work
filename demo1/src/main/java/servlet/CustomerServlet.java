@@ -74,27 +74,15 @@ public class CustomerServlet{
         url=urlutl(request, url);
 		// 截取其中的方法名
 		String methodName = url;//.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
-		System.out.println("doPost::methodName="+methodName);
+//		System.out.println("doPost::methodName="+methodName);
 		Method method = null;
 			// 使用反射机制获取在本类中声明了的方法
 			method = methodMap.get(methodName);
 			String claszNameString=method2clasz.get(methodName);
 			Object obj=objMap.get(claszNameString);
-			System.out.println("mothod="+method);
-			System.out.println("clas="+claszNameString);
-			System.out.println("obj="+obj);
-//			for( Map.Entry<String, String> entry:method2clasz.entrySet()){
-//				System.out.println("method2class");
-//				System.out.println(entry.getKey()+"+"+entry.getValue());
-//			}
-//			for( Map.Entry<String, Object> entry:objMap.entrySet()){
-//				System.out.println("objMap");
-//				System.out.println(entry.getKey()+"+"+entry.getValue());
-//			}
-//			for( Map.Entry<String, Method> entry:methodMap.entrySet()){
-//				System.out.println("methodmap");
-//				System.out.println(entry.getKey()+"+"+entry.getValue());
-//			}
+//			System.out.println("mothod="+method);
+//			System.out.println("clas="+claszNameString);
+//			System.out.println("obj="+obj);
 			// 执行方法
 			try {
 				if(method!=null) {
@@ -116,8 +104,15 @@ public class CustomerServlet{
 				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				System.out.println("can not found /noFound.html");
 				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO: handle exception
+				try {
+					doJson(request, "Error");
+				} catch (UnsupportedEncodingException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 	
 	}
@@ -135,11 +130,11 @@ public class CustomerServlet{
      Iterator iterator = rootElement.elementIterator();
      while (iterator.hasNext()){
          Element stu = (Element) iterator.next();
-         System.out.println("::"+stu.getName());
+//         System.out.println("::"+stu.getName());
          if( !stu.getName().equals(Constant.XML_MAPS)) {
         	 continue;
          }
-         System.out.println("get servlet maps from .xml");
+//         System.out.println("get servlet maps from .xml");
          Iterator iter0=stu.elementIterator();
          
          while(iter0.hasNext()) {
@@ -147,10 +142,10 @@ public class CustomerServlet{
          Element stu0 = (Element) iter0.next();
          List<Attribute> attributes = stu0.attributes();
          
-         System.out.println("======开始获取各个属性======");
+//         System.out.println("======开始获取各个属性======");
          String value=null,clasz=null,method=null;
          for (Attribute attribute : attributes) {
-         	System.out.println("name:"+attribute.getName()+"; vlaue:"+attribute.getValue());
+//         	System.out.println("name:"+attribute.getName()+"; vlaue:"+attribute.getValue());
          	if(attribute.getName().equals(Constant.XML_MAP_VALUE))
          	{
                  System.out.println(Constant.XML_MAP_VALUE+attribute.getValue());
@@ -165,9 +160,9 @@ public class CustomerServlet{
          }
          
          try {
-        	 System.out.println("ready to put:"+value+" "+clasz+" "+method);
+//        	 System.out.println("ready to put:"+value+" "+clasz+" "+method);
 			put_method(value,clasz,method);
-			System.out.println("put into methodMap");
+//			System.out.println("put into methodMap");
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -192,9 +187,9 @@ public class CustomerServlet{
 	private static void put_method(String valueString,String claszString,String methodString) throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException {
 		Class<?> clazz=ClassLoader.getSystemClassLoader().loadClass(claszString);
 		Annotation[] annoList=clazz.getAnnotations();
-		System.out.println(annoList.length);
+//		System.out.println(annoList.length);
 		for(int i=0;i<annoList.length;i++) {
-			System.out.println(annoList[i].annotationType());
+//			System.out.println(annoList[i].annotationType());
 			//只对有mycontroller注解的类进行映射
 			if(annoList[i].annotationType()==mycontroller.class) {
 				//request and response 是方法的参数
@@ -212,10 +207,10 @@ public class CustomerServlet{
 					}
 					method2clasz.put(valueString, claszString);
 					methodMap.put(valueString, myMethod);
-				System.out.println("add class:"+claszString+"method:"+methodString);
+//				System.out.println("add class:"+claszString+"method:"+methodString);
 				}
 				else {
-					System.out.println("class:"+claszString+" have annotation but\n method:"+methodString+"haven‘t annotation");
+//					System.out.println("class:"+claszString+" have annotation but\n method:"+methodString+"haven‘t annotation");
 				}
 			}
 	}
@@ -278,7 +273,7 @@ public class CustomerServlet{
 		String[] urlParts = url.split("\\?");
 		request.setBaseUrl(urlParts[0]);
 		HashMap<String, String> parmsMap=new HashMap<String, String>();
-		if(urlParts.length == 1) {
+		if(urlParts.length > 1) {
 		//有参数
 		String[] parms = urlParts[1].split("&");
 		for(String parm : parms) {
