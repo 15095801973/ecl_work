@@ -14,7 +14,10 @@ public class Request {
     private HashMap<String, String> params;//url里面的属性
     private HashMap<String, String> attributes;//HTTP Body里面的属性
     private int Content_Length;
-
+    private String content_Type;
+    public  String boundary =null;
+    private MulitpartData mData;
+    
     public InputStream getInputStream() {
         return inputStream;
     }
@@ -72,5 +75,21 @@ public class Request {
 
 	public void setAttributes(HashMap<String, String> attributes) {
 		this.attributes = attributes;
+	}
+
+	public String getContent_Type() {
+		return content_Type;
+	}
+
+	public void setContent_Type(String content_Type) {
+		this.content_Type = content_Type;
+	}
+
+	public MulitpartData getmData() {
+		return mData;
+	}
+
+	public void setmData(MulitpartData mData) {
+		this.mData = mData;
 	}
 }

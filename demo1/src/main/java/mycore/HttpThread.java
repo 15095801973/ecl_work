@@ -6,6 +6,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.util.HashMap;
+import test.savePngtest;
 
 public class HttpThread implements Runnable {
     private Socket socket;
@@ -18,38 +19,81 @@ public class HttpThread implements Runnable {
     public void run() {
         try {
         	CustomerServlet myServlet=new CustomerServlet();
-            BufferedReader reader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        	
+        	
+//            BufferedReader reader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
             Request request=new Request();
             request.setInputStream(socket.getInputStream());
             request.setOutputStream(socket.getOutputStream());
-            
+            InputStream input= request.getInputStream();
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();  
+        	byte[] buffer = new byte[1024];  
+        	int len;  
+        	while ((len = input.read(buffer)) > -1 ) {  
+        	    byteArrayOutputStream.write(buffer, 0, len);  
+        	}  
+        	byteArrayOutputStream.flush(); 
+        	InputStream inputStreamA = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+        	InputStream inputStreamB = new ByteArrayInputStream(byteArrayOutputStream.toByteArray()); 
+        	//将InputStream转换成字符串
+        	BufferedReader reader = new BufferedReader(new InputStreamReader(inputStreamB,"UTF-8"));
+
             String line=reader.readLine();
             while(line!=null&&!line.equals(""))
             {
                 System.out.println(line);
                 request.addHeader(line);
+                if(line.startsWith("Content-Type")) {
+                	String[] pStrings = line.split(";");
+                	String ContentType = pStrings[0].split(":")[1].trim();
+                	
+                	request.setContent_Type(ContentType);
+                	if(pStrings.length>=2) {
+                		String boundary = pStrings[1].split("=")[1];
+                		request.boundary = boundary;
+                	}
+                	
+                }else if(line.startsWith("Content-Length:")) {
+                	String Content_Length = line.split(":")[1];
+                	Content_Length = Content_Length.trim();
+                	int Length = Integer.parseInt(Content_Length);
+                	request.setContent_Length(Length);
+                }
                 line=reader.readLine();
             }
             System.out.println("==========请求 头 完结=======");
-            if(request.getHeader(3).startsWith("Content-Length:"))
-            {//读取HTTP正文部分
-            	String Content_Length = request.getHeader(3).split(":")[1];
-            	Content_Length = Content_Length.trim();
-            	int Length = Integer.parseInt(Content_Length);
-            	request.setContent_Length(Length);
-
-            	char[] cbuf= new char[Length];
-            	int readnum = reader.read(cbuf);
-            	System.out.println("readnum = "+readnum);
-            	System.out.println(cbuf);
+            //读取HTTP正文部分
+            	
+            	if(request.getContent_Type().equals("multipart/form-data")) {
+//            		char[] cbuf = new char[Length];
+//            		reader.read(cbuf);
+//            		OutputStream outputStream=null;
+//            		try {
+//            		outputStream = new ByteArrayOutputStream();
+//            		byte[] buf = new byte[1024];
+//            		int len=0;
+//            		while ((len = inputStream.read(buf)) !=-1 ) {
+//            			outputStream.write(buf, 0, len);
+//					}
+//            		}catch (Exception e) {
+//						// TODO: handle exception
+//            			e.printStackTrace();
+//					}finally {
+//						outputStream.flush();
+//						outputStream.close();
+//					}
+            		System.out.println("multipart");
+            		MulitpartData mdata = new MulitpartData();
+            		mdata.boundary = request.boundary;
+            		mdata.parse(request, inputStreamA);
+            	}
+            	else {
+            		String sbuf = reader.readLine();
             	System.out.println("=========请求 体 完结========");
             	//解析请求体
-            	HttpBodyUtl(cbuf);
+            	HttpBodyUtl(request, sbuf);
+            	}
             	
-            }
-            else {
-            	System.out.println("=====无请求 体====");
-            }
 //            BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
 //            String line1 = null;
 //            StringBuilder sb = new StringBuilder();
@@ -76,8 +120,20 @@ public class HttpThread implements Runnable {
             e.printStackTrace();
         }
     }
-    
-    private void HttpBodyUtl(char[] cbuf) throws IOException {
+    private void HttpBodyUtl(Request request , String sbuf) throws IOException {
+    	System.out.println("=========以字符形式解析HTTP Body 开始 =========");
+    	HashMap<String, String> mHashMap = new HashMap<String, String>();
+    	String[] parmStrings = sbuf.split("&");
+    	for(String parm :parmStrings) {
+    		String[] kandv = parm.split("=");
+    		if(kandv.length>=2) {
+    			mHashMap.put(kandv[0], kandv[1]);
+    		}
+    	}
+    	request.setAttributes(mHashMap);
+    	System.out.println("=========以字符形式解析HTTP Body 结束 =========");
+    }
+    private void HttpBodyUtlByte(Request request, char[] cbuf) throws IOException {
     	System.out.println("=========解析HTTP Body 开始 =========");
     	BufferedReader reader1 = new BufferedReader(new CharArrayReader(cbuf));
     	HashMap<String, String> mHashMap = new HashMap<String, String>();
@@ -106,6 +162,39 @@ public class HttpThread implements Runnable {
 						valueString = attemps[1].trim().replace("\"", "");
 						System.out.println("name= "+valueString);//找到name就跳了
 						}
+//						if(keyString.equals("filename")) {//字符流不能上传文件
+//							valueString = null;
+//							String filenameString = attemps[1].trim().replace("\"", "");
+//							System.out.println("filename= "+filenameString);	
+//							String line2 = reader1.readLine();
+////							File file = new File("D:/savePng.png");
+////							char[] buf2 = new char[8080];
+//							String tempString="";
+////							FileOutputStream fosFileOutputStream = new FileOutputStream("D:/log.png");
+//							
+//							while (line2!=null) {
+//								if(line2.startsWith("-----")) {
+//									break;
+//								}
+//								else if(line2.startsWith("Content-Type")) {
+//									line2 = reader1.readLine();
+//								}//Content-Type 是文件的一部分
+//								else {
+////									fosFileOutputStream.write(line2.getBytes());
+////									tempString=tempString+line2;
+//									tempString=tempString+line2+"\r\n";
+//									System.out.println("写入一行");
+//								}
+//								line2 = reader1.readLine();
+//								
+//							}
+////							fosFileOutputStream.close();
+//							mHashMap.put(filenameString, tempString);
+//							System.out.println("写入完毕");
+//							System.out.println(tempString);
+//							
+//							savePngtest.string2file(tempString, "D:/test.png");
+//						}
 						}
 					}
 				}
@@ -116,11 +205,13 @@ public class HttpThread implements Runnable {
 			else if(valueString!=null){
 				System.out.println("put : "+valueString+line1);
 				mHashMap.put(valueString, line1);
+				valueString = null;
 			}
 			 line1=reader1.readLine();
 			 System.out.println("next line1");
 		}
     	reader1.close();
+    	request.setAttributes(mHashMap);
     	System.out.println("=========解析HTTP Body 完成 =========");
 	}
 
