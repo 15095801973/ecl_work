@@ -3,15 +3,21 @@ package mycore;
 import servlet.CustomerServlet;
 
 import java.io.*;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.util.HashMap;
+
+import mycore.MulitpartData;
+import mycore.Request;
 import test.savePngtest;
 
-public class HttpThread implements Runnable {
+public class pred implements Runnable {
     private Socket socket;
 
-    public HttpThread(Socket socket) {
+    public pred(Socket socket) {
         this.socket = socket;
     }
 
@@ -26,23 +32,18 @@ public class HttpThread implements Runnable {
             request.setInputStream(socket.getInputStream());
             request.setOutputStream(socket.getOutputStream());
             InputStream input= request.getInputStream();
-//            if(!input.markSupported()) {
-//            	System.out.println("不支持");
-//            }
-//            input.mark(2048);
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();  
-//        	byte[] buffer = new byte[1024];  
-//        	int len;  
-//        	while ((len = input.read(buffer)) > -1 ) {  
-//        		System.out.println("1kb");
-//        	    byteArrayOutputStream.write(buffer, 0, len);  
-//        	}  
-//        	byteArrayOutputStream.flush(); 
-//        	InputStream inputStreamA = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-//        	InputStream inputStreamB = new ByteArrayInputStream(byteArrayOutputStream.toByteArray()); 
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();  
+        	byte[] buffer = new byte[1024];  
+        	int len;  
+        	while ((len = input.read(buffer)) > -1 ) {  
+        	    byteArrayOutputStream.write(buffer, 0, len);  
+        	}  
+        	byteArrayOutputStream.flush(); 
+        	InputStream inputStreamA = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+        	InputStream inputStreamB = new ByteArrayInputStream(byteArrayOutputStream.toByteArray()); 
         	//将InputStream转换成字符串
-//        	BufferedReader reader = new BufferedReader(new InputStreamReader(inputStreamB,"UTF-8"));
-        	BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+        	BufferedReader reader = new BufferedReader(new InputStreamReader(inputStreamB,"UTF-8"));
+
             String line=reader.readLine();
             while(line!=null&&!line.equals(""))
             {
@@ -68,9 +69,8 @@ public class HttpThread implements Runnable {
             }
             System.out.println("==========请求 头 完结=======");
             //读取HTTP正文部分
-            
             	
-            	if(request.getContent_Type()!= null && request.getContent_Type().equals("multipart/form-data")) {
+            	if(request.getContent_Type() !=null && request.getContent_Type().equals("multipart/form-data")) {
 //            		char[] cbuf = new char[Length];
 //            		reader.read(cbuf);
 //            		OutputStream outputStream=null;
@@ -91,20 +91,13 @@ public class HttpThread implements Runnable {
             		System.out.println("multipart");
             		MulitpartData mdata = new MulitpartData();
             		mdata.boundary = request.boundary;
-            		mdata.parse(request, input);//传文件就不能用reader了
-            		System.out.println("end mulipart");
+            		mdata.parse(request, inputStreamA);
             	}
-            	else if(request.getContent_Length()!=0 && request.getContent_Length()>0){
-            		char[] cbuf = new char[request.getContent_Length()];
-            		reader.read(cbuf);
-            		String string = new String(cbuf);
-            		HttpBodyUtl(request, string);
+            	else {
+            		String sbuf = reader.readLine();
             	System.out.println("=========请求 体 完结========");
             	//解析请求体
-//            	if(sbuf==null) {
-//            		System.out.println("无数据");
-//            	}
-//            	else HttpBodyUtl(request, sbuf);
+            	HttpBodyUtl(request, sbuf);
             	}
             	
 //            BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
@@ -125,27 +118,43 @@ public class HttpThread implements Runnable {
 //            }
 //            System.out.println("==========全部完结======");
             if(request.getHeader(0).startsWith("GET"))
+            {
+//            	PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+//            System.out.println("nnnnnnnnnnnnnnnnnnnn");
+//            	writer.write("nmd");
+//            	writer.write("\r\n");
+//            	writer.flush();
+//            	writer.close();
                 myServlet.doGet(request);
-            else if(request.getHeader(1).startsWith("POST"))
+            }
+//            else if(request.getHeader(1).startsWith("POST"))
+            else
                 myServlet.doPost(request);
-            reader.close();
+            
+//                input.close();
+//            byteArrayOutputStream.flush();
+//            byteArrayOutputStream.close();
+//            inputStreamA.close();
 //            inputStreamB.close();
+//            reader.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     private void HttpBodyUtl(Request request , String sbuf) throws IOException {
     	System.out.println("=========以字符形式解析HTTP Body 开始 =========");
+    	if(sbuf !=null) {
     	HashMap<String, String> mHashMap = new HashMap<String, String>();
     	String[] parmStrings = sbuf.split("&");
     	for(String parm :parmStrings) {
     		String[] kandv = parm.split("=");
     		if(kandv.length>=2) {
     			mHashMap.put(kandv[0], kandv[1]);
-    			System.out.println("k = "+kandv[0]+" v= "+kandv[1]);
     		}
     	}
     	request.setAttributes(mHashMap);
+    	}
     	System.out.println("=========以字符形式解析HTTP Body 结束 =========");
     }
     private void HttpBodyUtlByte(Request request, char[] cbuf) throws IOException {
@@ -225,7 +234,8 @@ public class HttpThread implements Runnable {
 			 line1=reader1.readLine();
 			 System.out.println("next line1");
 		}
-    	reader1.close();
+//    	reader1.close();
+    	
     	request.setAttributes(mHashMap);
     	System.out.println("=========解析HTTP Body 完成 =========");
 	}

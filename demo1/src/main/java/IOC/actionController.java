@@ -23,30 +23,18 @@ public class actionController {
 		this.name=name;
 	}
 	//value 暂时没有用到
-	@myaction(value = "get:/A_1")
-	public void test() {
+	@myaction(value = "/action/test")
+	public void test(Request request) {
 		System.out.println("action.test()");
 		System.out.println(name);
 	}
 	//value 暂时没有用到
-	@myaction(value = "get:/A_1")
+	@myaction(value = "/action")
 	private void action(Request request) {
 		System.out.println("action ...\n");
 		
-		try {
-			String nameString = request.getParms("name");
-			System.out.println("nameString = "+nameString);
-			CustomerServlet.doHtml(request, "/hello.html");
-		} catch (IOException e) {
-			System.out.println("action failed");
-			try {
-				CustomerServlet.doJson(request, "404");
-			} catch (UnsupportedEncodingException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String nameString = request.getParms("name");
+		System.out.println("nameString = "+nameString);
+		CustomerServlet.doHtml(request, "/hello.html");
 	}
 }

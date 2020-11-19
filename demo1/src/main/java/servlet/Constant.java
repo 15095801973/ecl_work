@@ -1,5 +1,7 @@
 package servlet;
 
+import servlet.CustomerServlet.LoadType;
+
 public final class Constant{
 	public static String XML_MAPS="maps";
 	public static String XML_MAP_VALUE="value";
@@ -8,5 +10,9 @@ public final class Constant{
 	public static String MULTIPART_FORM_DATA="multipart/form-data";
 	public static String LINEEND = "\r\n";
 	public static String MEDIA_DIR = "D:/DEMO/";
+	public static String PACK_DIR = "\\src\\main\\java";
+	public static String PACK_NAME = "";//意为扫描所有包
+	public static LoadType LOAD_T = LoadType.ScanXML;
+	//注入的两种方式, 扫描包或者解析xml文件.
 	
 }

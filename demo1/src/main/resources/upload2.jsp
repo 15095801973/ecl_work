@@ -1,5 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -27,12 +30,16 @@
 							 });  
 						}  
 					</script>
-this is upload2.html
+this is upload2
+<a>可以通过mulitpart/form-data传文件</a>
 <form action="/upload2/post" method="post" enctype="multipart/form-data">
-username<input id = "username" name = "username" type="text">
-passwd<input id = "passwd" name = "passwd" type="password" >
-<input id= "file" name = "filename" type = "file"> 
-<input type="submit">
+
+<p>username<input name = "username" type="text"></p>
+
+<p>passwd<input name = "passwd" type="password" ></p>
+
+<p><input name = "filename" type = "file"> </p>
+<p><input type="submit"></p>
 </form>
 </body>
 </html>

@@ -55,12 +55,15 @@ public class MulitpartData { // 仅包含必须的数据
             buffer = new byte[availableCount];
             readCount = inputStream.read(buffer, 0, availableCount);
             if (readCount == -1){
+            	System.out.println("读完body了,break");
                 notTerminated = false;
                 break;
                 // break 读到EOF,结束
             }
             if (readCount == 0){
-                continue;
+            	System.out.println("读了0字节, break");
+            	notTerminated = false;
+                 break;
             }
             String bufferStr = new String(buffer,"ascii");
             System.out.println("read ...."+readCount);

@@ -31,25 +31,14 @@ public class uploadController2 {
 	}
 
 	//value 暂时没有用到
-	@myaction(value = "get:/A_1")
+	@myaction(value = "/upload2/get")
 	private void get(Request request) {
 		System.out.println("upload2: get ...\n");
 		
-		try {
-			CustomerServlet.doHtml(request, "/upload2.html");
-		} catch (IOException e) {
-			System.out.println("action failed");
-			try {
-				CustomerServlet.doJson(request, "404");
-			} catch (UnsupportedEncodingException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//			CustomerServlet.doJson(request, "404");
+		CustomerServlet.doHtml(request, "/upload2.jsp");
 	}
-	@myaction(value = "post")
+	@myaction(value = "/upload2/post")
 	private void post(Request request) throws IOException {
 		
 		CustomerServlet.doJson(request, "upload 2 post succeed");

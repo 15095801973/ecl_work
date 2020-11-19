@@ -22,21 +22,15 @@ public class Person2 {
 		this.name=name;
 	}
 	//value 暂时没有用到
-	@myaction(value = "get:/A_1")
-	public void test() {
+	@myaction(value = "/test")
+	public void test(Request request) {
 		System.out.println("Person.test()");
 		System.out.println(name);
 	}
 	//value 暂时没有用到
-	@myaction(value = "get:/A_1")
+	@myaction(value = "/hello")
 	private void login(Request request) {
 		System.out.println("logging");
-		try {
-			CustomerServlet.doJson(request, "/hello.html");
-		} catch (IOException e) {
-			System.out.println("html failed");
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		CustomerServlet.doHtml(request, "/hello.html");
 	}
 }
