@@ -14,6 +14,7 @@ public class MulitpartData { // 仅包含必须的数据
 	public String boundary=null;
 	public String filename=null;
 	public HashMap<String, String>mmMap= new HashMap<String, String>();
+	public HashMap<String, byte[]>dtMap= new HashMap<String, byte[]>();
     // 当前循环执行的动作类型
     enum ActionType{
         TO_FIND_BOUNDARY_START, // 要找其实占位符 "--zhanweifu"
@@ -133,8 +134,9 @@ public class MulitpartData { // 仅包含必须的数据
                                     // 至此,取到了一帧完整的二进制音频数据
                                     byte[] audioArr = new byte[findCount - unprocessedCount];
                                     System.arraycopy(unprocessedArr, unprocessedCount, audioArr, 0, findCount-unprocessedCount);
-//                                  保存目标文件
-                                    savePngtest.saveByByte(audioArr, Constant.MEDIA_DIR+filename);
+//                                  先保存原二进制编码, 等待后续处理
+//                                    savePngtest.saveByByte(audioArr, Constant.MEDIA_DIR+filename);
+                                    dtMap.put(filename, audioArr);
                                     actionType = ActionType.TO_FIND_BOUNDARY_START;
                                 }
                                 unprocessedCount = findCount + "\r\n".length();

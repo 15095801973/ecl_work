@@ -1,9 +1,15 @@
 package servlet;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -84,6 +90,24 @@ public class CustomerServlet {
 
 //	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	public void doGet(Request request) {
+		
+		// 获取请求的URI地址信息
+				String url = request.getHeader(0).split(" ")[1] ;
+				String pathString = System.getProperty("user.dir")+Constant.MEDIA_DIR+url;
+				pathString=pathString.replace("/", "\\");
+		File file = new File(pathString);
+		System.out.println("文件路径="+pathString);
+		if(file.exists()) {
+			System.out.println("文件存在");
+			try {
+				doResource(request, file);
+				return;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println("获取文件失败");
+				e.printStackTrace();
+			}
+		}
 		System.out.println("doGet");
 		doPost(request);
 	}
@@ -343,6 +367,43 @@ public class CustomerServlet {
 		}
 		return buffer.toString();
 
+	}
+	public static void doResource(Request request, File file) throws IOException {
+		InputStream inputStream;
+			inputStream = new FileInputStream(file);
+		ByteArrayOutputStream byteArrayOutputStream =  new ByteArrayOutputStream();
+		byte[] buf = new byte[1024];
+		int len = 0;
+		try {
+			while((len = inputStream.read(buf)) !=-1) {
+				byteArrayOutputStream.write(buf, 0, len);
+			}
+			byteArrayOutputStream.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+		BufferedReader reader = new BufferedReader(new InputStreamReader(byteArrayInputStream));
+		PrintWriter writer = new PrintWriter(new OutputStreamWriter(request.getOutputStream()));
+		OutputStream outputStream = request.getOutputStream();
+		writer.println("HTTP/1.1 200 OK");
+		writer.println("Content-Type: Content-Disposition, attachment;fileName="+"Button.png");
+		writer.println("Content-Length:" + byteArrayOutputStream.toByteArray().length);
+		writer.println();
+		writer.flush();
+		try {
+		while(( len = byteArrayInputStream.read(buf)) !=-1) {
+			outputStream.write(buf, 0, len);
+			System.out.println("下载了 "+len);
+		}
+		
+		outputStream.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
 	}
 
 	public static String urlutl(Request request, String url) {

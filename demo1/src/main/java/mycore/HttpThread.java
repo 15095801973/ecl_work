@@ -92,6 +92,7 @@ public class HttpThread implements Runnable {
             		MulitpartData mdata = new MulitpartData();
             		mdata.boundary = request.boundary;
             		mdata.parse(request, input);//传文件就不能用reader了
+            		request.setmData(mdata);
             		System.out.println("end mulipart");
             	}
             	else if(request.getContent_Length()!=0 && request.getContent_Length()>0){
@@ -126,7 +127,7 @@ public class HttpThread implements Runnable {
 //            System.out.println("==========全部完结======");
             if(request.getHeader(0).startsWith("GET"))
                 myServlet.doGet(request);
-            else if(request.getHeader(1).startsWith("POST"))
+            else if(request.getHeader(0).startsWith("POST"))
                 myServlet.doPost(request);
             reader.close();
 //            inputStreamB.close();

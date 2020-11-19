@@ -217,9 +217,10 @@ public static void convert2png(String base, String path) throws IOException {
 		outputStream.close();
 	}
 }
+
 public static void saveByByte(byte[] byts, String path) throws IOException {
 	System.out.println(byts.toString());
-	File file = new File(path);
+	File file = new File(System.getProperty("user.dir")+path);
 	if(file.exists()) {
 		file.delete();
 	}

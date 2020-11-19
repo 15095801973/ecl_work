@@ -30,16 +30,16 @@
 							 });  
 						}  
 					</script>
-this is upload2
-<a>可以通过mulitpart/form-data传文件</a>
-<form action="/upload2/post" method="post" enctype="multipart/form-data">
-
+this is upload3
+<a>可以通过ajax , mulitpart/form-data传文件</a>
+<form action="/upload2/post" method="post" >
+<!-- 没有submit, 所以这个表单不会自己提交 -->
 <p>username<input name = "username" type="text"></p>
 
 <p>passwd<input name = "passwd" type="password" ></p>
 
 <p><input name = "filename" type = "file"> </p>
-<p><input type="submit"></p>
+<p><input type="button"  onclick="doUpload()"></p>
 <a href="/Button.png">href</a>
 </form>
 </body>

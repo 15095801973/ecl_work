@@ -15,8 +15,8 @@ public class Request {
     private HashMap<String, String> attributes;//HTTP Body里面的属性
     private int Content_Length;
     private String content_Type;
-    public  String boundary =null;
-    private MulitpartData mData;
+    public  String boundary = null;
+    private MulitpartData mData = null;
     
     public InputStream getInputStream() {
         return inputStream;
