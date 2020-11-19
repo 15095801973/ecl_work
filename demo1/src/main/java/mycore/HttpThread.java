@@ -46,7 +46,7 @@ public class HttpThread implements Runnable {
 //        	    byteArrayOutputStream.write(buffer, 0, len);  
 //        	}  
         	byteArrayOutputStream.flush(); 
-//        	InputStream inputStreamA = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+        	InputStream inputStreamA = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
         	InputStream inputStreamB = new ByteArrayInputStream(byteArrayOutputStream.toByteArray()); 
 //        	将InputStream转换成字符串
         	BufferedReader reader = new BufferedReader(new InputStreamReader(inputStreamB,"UTF-8"));
@@ -99,7 +99,7 @@ public class HttpThread implements Runnable {
             		System.out.println("multipart");
             		MulitpartData mdata = new MulitpartData();
             		mdata.boundary = request.boundary;
-            		mdata.parse(request, input);//传文件就不能用reader了
+            		mdata.parse(request, inputStreamA);//传文件就不能用reader了
             		request.setmData(mdata);
             		System.out.println("end mulipart");
             	}

@@ -56,18 +56,18 @@ public class MulitpartData { // 仅包含必须的数据
         int readCount = 0;
         Date now;
         Date lastDate = new Date();
-        while(notTerminated&&len>unprocessedCount){
+        while(notTerminated){
             // 读取新的buffer出来,并存入到 unprocessedSB 和 unprocessedArr
             availableCount = inputStream.available();
             buffer = new byte[availableCount];
             readCount = inputStream.read(buffer, 0, availableCount);
-            if (readCount == -1){
-            	System.out.println("读完body了,break");
-                notTerminated = false;
-                break;
-                // break 读到EOF,结束
-            }
-            if (readCount != 0){
+//            if (readCount == -1){
+//            	System.out.println("读完body了,break");
+//                notTerminated = false;
+//                break;
+//                // break 读到EOF,结束
+//            }
+            if (readCount > 0){
 //            	System.out.println("读了0字节, break");
 //            	notTerminated = false;
 //                 break;
