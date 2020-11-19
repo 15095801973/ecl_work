@@ -11,35 +11,37 @@
 <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
 					<script type="text/javascript">
 						function doUpload() {  
-							 // var formData = new FormData($("#uploadForm")[0]);  
-							 var formData = new FormData()
-							 formData.append("userName",$("#username"));
-							 formData.append("targetFile",$("#file"));
+						alert("do");
+							  var formData = new FormData($("#fd")[0]);  
+							 //var formData = new FormData()
+							 //formData.append("userName",$("#username"));
+							 //formData.append("targetFile",$("#file"));
+							 alert(formData);
 							 $.ajax({  
-								  url: 'http://localhost:8080/upload2/post' ,  
-								  type: 'POST',  
+								  url: 'http://localhost:8080/upload3/post' ,  
+								  type: 'post',  
 								  data: formData,  
-								  async: false,  
+								  async: true,  
 								  cache: false,  
 								  contentType: false,  
 								  processData: false,  
 								  dataType:'json',
 								  success: function (data) {  
-									  alert(data);  
+									  alert("suceess");  
 								  }
 							 });  
 						}  
 					</script>
-this is upload2
-<a>可以通过mulitpart/form-data传文件</a>
-<form action="/upload2/post" method="post" enctype="multipart/form-data">
-
-<p>username<input name = "username" type="text"></p>
+this is upload3
+<a>可以通过ajax , mulitpart/form-data传文件</a>
+<form id="fd" action="/upload2/post" method="post" enctype="mulitpart/form-data" >
+<!-- 没有submit, 所以这个表单不会自己提交 -->
+<p>username<input id = "username" name = "username" type="text"></p>
 
 <p>passwd<input name = "passwd" type="password" ></p>
 
-<p><input name = "filename" type = "file"> </p>
-<p><input type="submit"></p>
+<p><input id="file" name = "filename" type = "file"> </p>
+<p><input type="button" value="click me" onclick="doUpload();"></p>
 <a href="/Button.png">href</a>
 </form>
 </body>

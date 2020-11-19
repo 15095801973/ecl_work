@@ -13,7 +13,7 @@ public class Request {
     private String BaseUrl;
     private HashMap<String, String> params;//url里面的属性
     private HashMap<String, String> attributes;//HTTP Body里面的属性
-    private int Content_Length;
+    private int Content_Length = 0;
     private String content_Type;
     public  String boundary = null;
     private MulitpartData mData = null;
@@ -91,5 +91,10 @@ public class Request {
 
 	public void setmData(MulitpartData mData) {
 		this.mData = mData;
+	}
+
+	public List<String> getHeader() {
+		// TODO Auto-generated method stub
+		return header;
 	}
 }

@@ -399,10 +399,15 @@ public class CustomerServlet {
 		}
 		
 		outputStream.flush();
+		outputStream.close();
+		writer.close();
+		reader.close();
+		byteArrayInputStream.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		inputStream.close();
 			
 	}
 

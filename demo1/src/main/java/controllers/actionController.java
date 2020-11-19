@@ -1,7 +1,8 @@
-package IOC;
+package controllers;
 
 import IOC.myautowired;
 import IOC.mycomponent;
+import IOC.mycontroller;
 import mycore.Request;
 import servlet.CustomerServlet;
 

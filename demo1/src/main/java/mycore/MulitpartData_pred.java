@@ -6,12 +6,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collector.Characteristics;
 
 import servlet.Constant;
 import test.savePngtest;
  
-public class MulitpartData { // 仅包含必须的数据
+public class MulitpartData_pred { // 仅包含必须的数据
  
 	public String boundary=null;
 	public String filename=null;
@@ -35,15 +34,12 @@ public class MulitpartData { // 仅包含必须的数据
         // 读取出来的数据存储两个对象
         // 一个是StringBuilder对象,主要用 index 函数来查找 关键的特征字符串,如起始zhanweifu, \r\n, \r\n\r\n 等
         // 一个是unprocessedArr,保存所有读到de buffer
-    	if(inputStream.available() <=0) {
-    		return ;
-    	}
-        byte[] unprocessedArr = new byte[Constant.MAX_UPLOAD_ONCE];
+        byte[] unprocessedArr = new byte[22000];
         StringBuilder unprocessedSB = new StringBuilder();
  
         int unprocessedCount = 0; // 记录当前未做处理的 索引值
         int pos = 0; // 记录当前未做处理的 索引值
-        int len = request.getContent_Length();
+      
         int totalReadCount = 0; // 记录当前总读出的字节数
  
         // 初始化actionType, dataType, 和 循环跳出条件
@@ -51,15 +47,22 @@ public class MulitpartData { // 仅包含必须的数据
         DataType dataType = DataType.ZERO_TYPE;
         boolean notTerminated = true;
  
-        byte[] buffer = null;
+        int len = request.getContent_Length();
+        byte[] buffer ;
+        buffer = new byte[len];
         int availableCount = 0;
         int readCount = 0;
+        System.out.println("总共 字节数 "+request.getContent_Length());
+        Date before=new Date();
         Date now;
-        Date lastDate = new Date();
-        while(notTerminated&&len>unprocessedCount){
+        while(totalReadCount <len){
             // 读取新的buffer出来,并存入到 unprocessedSB 和 unprocessedArr
+//        	int firstByte = inputStream.read();
             availableCount = inputStream.available();
-            buffer = new byte[availableCount];
+            if(availableCount!=0) {
+            	System.out.println("availabel "+availableCount);
+            }
+//            readCount = inputStream.read(buffer, 0, availableCount);
             readCount = inputStream.read(buffer, 0, availableCount);
             if (readCount == -1){
             	System.out.println("读完body了,break");
@@ -67,32 +70,45 @@ public class MulitpartData { // 仅包含必须的数据
                 break;
                 // break 读到EOF,结束
             }
-            if (readCount != 0){
-//            	System.out.println("读了0字节, break");
-//            	notTerminated = false;
-//                 break;
-//            	continue;
             String bufferStr = new String(buffer,"ascii");
             System.out.println("read ...."+readCount);
-            System.out.println("totalread ...."+totalReadCount);
-            System.out.println("unpros ...."+unprocessedCount);
-//            System.out.println(bufferStr);
+            System.out.println(bufferStr);
             unprocessedSB = unprocessedSB.append(bufferStr);
             System.arraycopy(buffer, 0, unprocessedArr, totalReadCount, readCount);
             totalReadCount += readCount;
-            }
-            // 判断是否已取到结束帧
-            if(unprocessedSB.indexOf("--"+boundary+"--") !=-1) {
-            if (unprocessedSB.indexOf("--"+boundary+"--")+("--"+boundary+"--").length() <=unprocessedCount) {
-            	System.out.println("index:"+unprocessedSB.indexOf("--"+boundary+"--"));
-                notTerminated = false;
-            }
-            }
+            if (readCount == 0){
+//            	if(totalReadCount >=request.getContent_Length()) {
+            		System.out.println("break");
+//            	notTerminated = false;
+                 break;
+            	}
+//            	try {now = new Date();
+//                // 现在的时间减去开始的时间可以计算出来使用的时间
+//                	long t = (now.getTime() - before.getTime())/1000;
+//                	if(t>100) {
+//                		System.out.println("超时..");
+//                		break;
+//                	}
+//					Thread.sleep(200);
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//            	continue;
+//            }
+            
  
+//            // 判断是否已取到结束帧
+//            if(unprocessedSB.indexOf("--"+boundary+"--") !=-1) {
+//            if (unprocessedSB.indexOf("--"+boundary+"--")+("--"+boundary+"--").length() <=unprocessedCount) {
+//            	System.out.println("index:"+unprocessedSB.indexOf("--"+boundary+"--"));
+//                notTerminated = false;
+//            }
+//            }
             // 解析数据
             // 在对应的 actionType 下, 查找对应的目标字符串
             // 去到一帧完整的json或audio type的数据之后就做下一步处理
-//            while(unprocessedCount+2<totalReadCount) {//最后有/r/n,故+2
+            while(unprocessedCount+2<totalReadCount) {//最后有/r/n,故+2
             switch (actionType){
                 case TO_FIND_BOUNDARY_START: {
                     int findCount = unprocessedSB.indexOf("--"+boundary, unprocessedCount);
@@ -157,11 +173,11 @@ public class MulitpartData { // 仅包含必须的数据
                 }
                 default:
                     break;
-            }
             }//while
-        
-        inputStream.close();
+            }
         }
+//        inputStream.close();
+    }
  
     private DataType getDataType(String descHeadStr){
     	if(descHeadStr.indexOf("filename=")!= -1) {

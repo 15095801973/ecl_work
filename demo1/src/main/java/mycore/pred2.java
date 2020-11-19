@@ -8,10 +8,10 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import test.savePngtest;
 
-public class HttpThread implements Runnable {
+public class pred2 implements Runnable {
     private Socket socket;
 
-    public HttpThread(Socket socket) {
+    public pred2(Socket socket) {
         this.socket = socket;
     }
 
@@ -22,35 +22,40 @@ public class HttpThread implements Runnable {
         	
         	
 //            BufferedReader reader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            
             Request request=new Request();
             request.setInputStream(socket.getInputStream());
             request.setOutputStream(socket.getOutputStream());
             InputStream input= request.getInputStream();
-//            if(!input.markSupported()) {
-//            	System.out.println("不支持");
-//            }
+            if(!input.markSupported()) {
+            	System.out.println("不支持");
+            }
+             int availableCount = input.available();
+            if(availableCount!=0) {
+            	System.out.println("availabel "+availableCount);
+            }
 //            input.mark(2048);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(10240);  
-//            byte[] attr = new byte[102400];
-        	byte[] buffer ;  
-        	int totalReadCount = 0 ;  
-        	int readCount ;
-        	while( (readCount = input.available())>0) {
-        		buffer = new byte[readCount];
-        		input.read(buffer);
-//        System.arraycopy(buffer, 0, attr, totalReadCount, readCount);
-        		byteArrayOutputStream.write(buffer, totalReadCount, readCount);
-        	}
+//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();  
+//        	byte[] buffer = new byte[1024];  
+//        	int len;  
 //        	while ((len = input.read(buffer)) > -1 ) {  
-//        		System.out.println("128b");
+//        		System.out.println("1kb "+len);
 //        	    byteArrayOutputStream.write(buffer, 0, len);  
 //        	}  
-        	byteArrayOutputStream.flush(); 
-//        	InputStream inputStreamA = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-        	InputStream inputStreamB = new ByteArrayInputStream(byteArrayOutputStream.toByteArray()); 
-//        	将InputStream转换成字符串
-        	BufferedReader reader = new BufferedReader(new InputStreamReader(inputStreamB,"UTF-8"));
-//        	BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+//        	byteArrayOutputStream.flush(); 
+//        	byteArrayOutputStream.close();
+//        	input.close();
+//        	byte[] buff = byteArrayOutputStream.toByteArray();
+//        	for(int i = 0; i < buff.length; i++)
+//                System.out.println(buff[i]);
+//        	String string1 = new String(buff);
+//        	System.out.println(string1);
+//        	System.out.println("byte lentgh:" +buff.length);
+//        	InputStream inputStreamA = new ByteArrayInputStream(buff);
+//        	InputStream inputStreamB = new ByteArrayInputStream(buff); 
+//        	System.out.println("inputstream mark?"+inputStreamA.markSupported());
+//        	BufferedReader reader = new BufferedReader(new InputStreamReader(inputStreamB,"UTF-8"));
+        	BufferedReader reader = new BufferedReader(new InputStreamReader(input));
             String line=reader.readLine();
             while(line!=null&&!line.equals(""))
             {
@@ -99,6 +104,7 @@ public class HttpThread implements Runnable {
             		System.out.println("multipart");
             		MulitpartData mdata = new MulitpartData();
             		mdata.boundary = request.boundary;
+//            		reader.close();
             		mdata.parse(request, input);//传文件就不能用reader了
             		request.setmData(mdata);
             		System.out.println("end mulipart");
@@ -133,12 +139,12 @@ public class HttpThread implements Runnable {
 //                System.out.println("body:"+line);
 //            }
 //            System.out.println("==========全部完结======");
-            if(!request.getHeader().isEmpty() &&request.getHeader(0).startsWith("GET"))
+            if(request.getHeader(0).startsWith("GET"))
                 myServlet.doGet(request);
-            else if(!request.getHeader().isEmpty() && request.getHeader(0).startsWith("POST"))
+            else if(request.getHeader(0).startsWith("POST"))
                 myServlet.doPost(request);
             reader.close();
-//            inputStreamB.close();
+//            inputStreamA.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -157,7 +163,8 @@ public class HttpThread implements Runnable {
     	request.setAttributes(mHashMap);
     	System.out.println("=========以字符形式解析HTTP Body 结束 =========");
     }
-    private void HttpBodyUtlByte(Request request, char[] cbuf) throws IOException {
+    @SuppressWarnings("unused")
+	private void HttpBodyUtlByte(Request request, char[] cbuf) throws IOException {
     	System.out.println("=========解析HTTP Body 开始 =========");
     	BufferedReader reader1 = new BufferedReader(new CharArrayReader(cbuf));
     	HashMap<String, String> mHashMap = new HashMap<String, String>();
