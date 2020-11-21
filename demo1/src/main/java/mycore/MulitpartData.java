@@ -8,8 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collector.Characteristics;
 
-import servlet.Constant;
-import test.savePngtest;
+import services.Constant;
  
 public class MulitpartData { // 仅包含必须的数据
  

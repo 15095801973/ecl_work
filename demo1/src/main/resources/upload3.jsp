@@ -8,47 +8,41 @@
     <title>Title</title>
 </head>
 <body>
-<div>
-                <div class="form-group">
-                    <label>请选择文件</label>
-                    <input type="file" id="file" />
-                </div>
-                <div class="progress" style="width: 300px; height: 10px;background-color: #0000FE;">
-                    <div class="progress-bar" style="height:100%; width: 0%; background-color: #00FF00;">0%</div>
-                </div>
-            </div>
-            <script>
-                // 获取文件选择空间
-                var file = document.getElementById("file")
-                // 获取进度条元素
-                var pro = document.querySelector('.progress-bar')
-                file.onchange = function(){
-                    // 创建空的formData对象
-                    var formData = new FormData();
-                    // 将用户选择的文件追加到formData表单对象中
-                    formData.append('arrtName',file.files[0])
-                    // console.log(formData)
-                    // 创建ajax对象
-                    var xhr = new XMLHttpRequest();
-                    // 对ajax对象进行配置
-                    xhr.open('post','http://localhost:8080/upload2/post')
-                    // 在文件上传过程中持续触发
-                    xhr.upload.onprogress = function(ev){
-                        // ev.loaded 文件已经上传了多少
-                        // ev.total 上传文件的总大小
-                        var result = (ev.loaded/ev.total)*100 +'%'
-                        pro.style.width = result;
-                        pro.innerHTML = result;
-                    }
-                    xhr.send(formData)
-                    // 监听响应
-                    xhr.onload = function(){
-                        if(xhr.status == 200){
-                            console.log(xhr.responseText)
-                        }
-                    }
-                }
-            </script>
-            
-          </body>
+<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+					<script type="text/javascript">
+						function doUpload() {  
+						alert("do");
+							  var formData = new FormData($("#fd")[0]);  
+							 //var formData = new FormData()
+							 //formData.append("userName",$("#username"));
+							 //formData.append("targetFile",$("#file"));
+							 alert(formData);
+							 $.ajax({  
+								  url: 'http://localhost:8080/upload3/post' ,  
+								  type: 'post',  
+								  data: formData,  
+								  async: true,  
+								  cache: false,  
+								  contentType: false,  
+								  processData: false,  
+								  dataType:'json',
+								  success: function (data) {  
+									  alert("suceess");  
+								  }
+							 });  
+						}  
+					</script>
+this is upload3
+<a>可以通过ajax , mulitpart/form-data传文件</a>
+<form id="fd" action="/upload2/post" method="post" enctype="mulitpart/form-data" >
+<!-- 没有submit, 所以这个表单不会自己提交 -->
+<p>username<input id = "username" name = "username" type="text"></p>
+
+<p>passwd<input name = "passwd" type="password" ></p>
+
+<p><input id="file" name = "filename" type = "file"> </p>
+<p><input type="button" value="click me" onclick="doUpload();"></p>
+<a href="/Button.png">href</a>
+</form>
+</body>
 </html>

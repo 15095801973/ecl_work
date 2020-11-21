@@ -1,18 +1,6 @@
-package servlet;
+package services;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -26,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.bcel.classfile.JavaClass;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -38,8 +27,7 @@ import IOC.mycomponent;
 import IOC.mycontroller;
 import mycore.HttpThread;
 import mycore.Request;
-import servlet.Constant;
-
+import mycore.Response;
 //public class CustomerServlet extends HttpServlet {
 public class CustomerServlet {
 
@@ -48,14 +36,13 @@ public class CustomerServlet {
 	private static HashMap<String, Object> objMap = new HashMap<String, Object>();
 	private static final long serialVersionUID = 1L;
 	public static LoadType loadt = LoadType.ScanPack;
-	
-	 enum LoadType {
-		ScanXML,
-		ScanPack
+
+	public enum LoadType {
+		ScanXML, ScanPack
 	}
 
 	public CustomerServlet() {
-		
+
 		System.out.println("初始化。。。");
 		try {// 解析xml
 			switch (this.loadt) {
@@ -67,12 +54,11 @@ public class CustomerServlet {
 			default:
 				break;
 			}
-			
-			
+
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
@@ -90,14 +76,14 @@ public class CustomerServlet {
 
 //	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	public void doGet(Request request) {
-		
+
 		// 获取请求的URI地址信息
-				String url = request.getHeader(0).split(" ")[1] ;
-				String pathString = System.getProperty("user.dir")+Constant.MEDIA_DIR+url;
-				pathString=pathString.replace("/", "\\");
+		String url = request.getHeader(0).split(" ")[1];
+		String pathString = System.getProperty("user.dir") + Constant.MEDIA_DIR + url;
+		pathString = pathString.replace("/", "\\");
 		File file = new File(pathString);
-		System.out.println("文件路径="+pathString);
-		if(file.exists()) {
+		System.out.println("文件路径=" + pathString);
+		if (file.exists()) {
 			System.out.println("文件存在");
 			try {
 				doResource(request, file);
@@ -114,7 +100,7 @@ public class CustomerServlet {
 
 	public void doPost(Request request) {
 		// 获取请求的URI地址信息
-		String url = request.getHeader(0).split(" ")[1] ;
+		String url = request.getHeader(0).split(" ")[1];
 		url = urlutl(request, url);
 		// 截取其中的方法名
 		String methodName = url;// .substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
@@ -134,7 +120,7 @@ public class CustomerServlet {
 				method.setAccessible(true);
 				method.invoke(obj, request);
 			} else {// 返回404页面
-				System.out.println("invoke failed:"+methodName);
+				System.out.println("invoke failed:" + methodName);
 				doHtml(request, "/noFound.jsp");
 			}
 		} catch (IllegalAccessException e) {
@@ -185,28 +171,29 @@ public class CustomerServlet {
 //			System.out.println("name = " + name);
 //			Object obj = Class.forName(packageName + name);// 不同于classload,直接获取对象
 			Class<?> clasz = ClassLoader.getSystemClassLoader().loadClass(packageName + name);
-			//注意得获取Declared的注解才行
+			System.out.println(packageName + name);
+			// 注意得获取Declared的注解才行
 			Annotation[] ans = clasz.getDeclaredAnnotations();
 			mycontroller aMycontroller = clasz.getDeclaredAnnotation(mycontroller.class);
-			if(aMycontroller !=null) {
+			if (aMycontroller != null) {
 				Method[] methods = clasz.getDeclaredMethods();
 //				System.out.println("====----------==========");
 				for (int i = 0; i < methods.length; i++) {
-					
-					myaction aMyaction=methods[i].getAnnotation(myaction.class);
-					if(aMyaction != null){
-						//获取映射的值
+
+					myaction aMyaction = methods[i].getAnnotation(myaction.class);
+					if (aMyaction != null) {
+						// 获取映射的值
 						String value = aMyaction.value();
 //					System.out.println("val: "+value);
 //					System.out.println("method: "+methods[i].getName());
 //					System.out.println("obj : "+clasz.newInstance());
 						objMap.put(clasz.getName(), clasz.newInstance());
-					method2clasz.put(value, clasz.getName());
-					methodMap.put(value, methods[i]);
+						method2clasz.put(value, clasz.getName());
+						methodMap.put(value, methods[i]);
 					}
 				}
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("exception = " + e.getLocalizedMessage());
@@ -256,7 +243,7 @@ public class CustomerServlet {
 
 					try {
 //        	 System.out.println("ready to put:"+value+" "+clasz+" "+method);
-						//映射的值, 类, 方法
+						// 映射的值, 类, 方法
 						put_method(value, clasz, method);
 //			System.out.println("put into methodMap");
 					} catch (ClassNotFoundException e) {
@@ -335,7 +322,7 @@ public class CustomerServlet {
 		writer.close();
 	}
 
-	public static void doHtml(Request request, String name)  {
+	public static void doHtml(Request request, String name) {
 		// name即是html地址
 		String content;
 		try {
@@ -352,7 +339,6 @@ public class CustomerServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 
 	}
 
@@ -368,14 +354,15 @@ public class CustomerServlet {
 		return buffer.toString();
 
 	}
+
 	public static void doResource(Request request, File file) throws IOException {
 		InputStream inputStream;
-			inputStream = new FileInputStream(file);
-		ByteArrayOutputStream byteArrayOutputStream =  new ByteArrayOutputStream();
+		inputStream = new FileInputStream(file);
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 		byte[] buf = new byte[1024];
 		int len = 0;
 		try {
-			while((len = inputStream.read(buf)) !=-1) {
+			while ((len = inputStream.read(buf)) != -1) {
 				byteArrayOutputStream.write(buf, 0, len);
 			}
 			byteArrayOutputStream.flush();
@@ -388,27 +375,27 @@ public class CustomerServlet {
 		PrintWriter writer = new PrintWriter(new OutputStreamWriter(request.getOutputStream()));
 		OutputStream outputStream = request.getOutputStream();
 		writer.println("HTTP/1.1 200 OK");
-		writer.println("Content-Type: Content-Disposition, attachment;fileName="+"Button.png");
+		writer.println("Content-Type: Content-Disposition, attachment;fileName=" + "Button.png");
 		writer.println("Content-Length:" + byteArrayOutputStream.toByteArray().length);
 		writer.println();
 		writer.flush();
 		try {
-		while(( len = byteArrayInputStream.read(buf)) !=-1) {
-			outputStream.write(buf, 0, len);
-			System.out.println("下载了 "+len);
-		}
-		
-		outputStream.flush();
-		outputStream.close();
-		writer.close();
-		reader.close();
-		byteArrayInputStream.close();
+			while ((len = byteArrayInputStream.read(buf)) != -1) {
+				outputStream.write(buf, 0, len);
+				System.out.println("下载了 " + len);
+			}
+
+			outputStream.flush();
+			outputStream.close();
+			writer.close();
+			reader.close();
+			byteArrayInputStream.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		inputStream.close();
-			
+
 	}
 
 	public static String urlutl(Request request, String url) {
@@ -432,5 +419,38 @@ public class CustomerServlet {
 		request.setParams(parmsMap);
 		return urlParts[0];
 	}
+
+	public static void doJsp(Request request, String jspName) {
+		// TODO Auto-generated method stub
+		System.out.println("doJsp...");
+		String jspPath = System.getProperty("user.dir")+Constant.JSP_DIR + jspName;
+		String javaName =jspName.split("\\.")[0].replace("/", "");
+		
+		String javaName2 = javaName+ ".java";
+		String fullName = System.getProperty("user.dir")+
+				Constant.PACK_DIR+"servlet\\"+ javaName2;
+		File file = new File(fullName);
+		if (!file.exists()) {
+
+			System.out.println(jspPath+"+"+jspName);
+			
+			myJSPCompiler.compileJSP(jspPath, jspName);
+		}
+
+		try {
+//			Class.forName(packageName + name);
+			Class<?> clasz = ClassLoader.getSystemClassLoader().loadClass("servlet." + javaName);
+			Object obj;
+			obj = clasz.newInstance();
+			Response response = new Response();
+			response.setOutputStream(request.getOutputStream());
+			java.lang.reflect.Method method = clasz.getDeclaredMethod("service", Request.class, Response.class);
+			method.setAccessible(true);
+			method.invoke(obj, request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 
 }

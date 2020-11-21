@@ -1,6 +1,6 @@
-package servlet;
+package services;
 
-import servlet.CustomerServlet.LoadType;
+import services.CustomerServlet.LoadType;
 
 public final class Constant{
 	public static String XML_MAPS="maps";
@@ -10,6 +10,7 @@ public final class Constant{
 	public static String MULTIPART_FORM_DATA="multipart/form-data";
 	public static String LINEEND = "\r\n";
 	public static String MEDIA_DIR = "\\src\\main\\resources\\media\\";
+	public static String JSP_DIR = "\\src\\main\\resources\\jsp\\";
 	public static String PACK_DIR = "\\src\\main\\java\\";
 	public static String PACK_NAME = "";//意为扫描所有包
 	public static LoadType LOAD_T = LoadType.ScanPack;

@@ -1,10 +1,8 @@
 package controllers;
 
-import IOC.myautowired;
-import IOC.mycomponent;
-import IOC.mycontroller;
+import IOC.*;
 import mycore.Request;
-import servlet.CustomerServlet;
+import services.CustomerServlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,8 +12,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import IOC.myaction;
-import testAnna.Interceptor;
 
 @mycontroller
 public class actionController {

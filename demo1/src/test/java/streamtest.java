@@ -1,12 +1,6 @@
 package test;
 
-import servlet.CustomerServlet;
-
 import java.io.*;
-import java.net.Socket;
-import java.net.URLDecoder;
-import java.util.HashMap;
-import test.savePngtest;
 public class streamtest {
 public static void main(String[] args) throws IOException {
 	File file = new File("D:/testst.txt");

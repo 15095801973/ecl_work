@@ -3,7 +3,7 @@ package IOC;
 import IOC.myautowired;
 import IOC.mycomponent;
 import mycore.Request;
-import servlet.CustomerServlet;
+import services.CustomerServlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;

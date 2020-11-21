@@ -1,34 +1,18 @@
 package controllers;
 
-import IOC.myautowired;
-import IOC.mycomponent;
-import IOC.mycontroller;
+import IOC.*;
 import mycore.MulitpartData;
 import mycore.Request;
-import servlet.Constant;
-import servlet.CustomerServlet;
-import test.savePngtest;
+import services.Constant;
+import services.CustomerServlet;
+import services.savePngtest;
 
 import java.io.IOException;
-import java.io.File;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import IOC.myaction;
-import testAnna.Interceptor;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.FileUtils;
+import javax.swing.filechooser.FileNameExtensionFilter;
 @mycontroller
 public class uploadController2 {
 	public String name;
@@ -53,15 +37,17 @@ public class uploadController2 {
 		for(Map.Entry<String, byte[]> dataEntry:mData.dtMap.entrySet()) {
 			String pathString = dataEntry.getKey();
 			String[]  spStrings =pathString.split("\\.");
-			if(spStrings.length==2) {
+			if(spStrings.length>=2) {
+				String hzString = spStrings[spStrings.length-1];
 				for(String as :Constant.ALLOW_UP_TYPES) {
-					if(spStrings[1].equals(as)) {//防止恶意文件上传进来
+					if(hzString.equals(as)) {//防止恶意文件上传进来
 					        UUID randomUUID = UUID.randomUUID();
-					    String pa = Constant.MEDIA_DIR+spStrings[0]+randomUUID+"."+spStrings[1];
+					        String filename = spStrings[0]+randomUUID+"."+hzString;
+					    String pa = Constant.MEDIA_DIR+filename;
 					    System.out.println("savedpath = "+pa);
 						try {
 							savePngtest.saveByByte(dataEntry.getValue(), pa);
-							CustomerServlet.doJson(request, "upload 2 post succeed");
+							CustomerServlet.doJson(request, "{data:"+filename+"}");
 							return;
 						} catch (IOException e) {
 							// TODO Auto-generated catch block

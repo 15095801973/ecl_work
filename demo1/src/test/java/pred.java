@@ -1,7 +1,5 @@
 package mycore;
 
-import servlet.CustomerServlet;
-
 import java.io.*;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -12,6 +10,7 @@ import java.util.HashMap;
 
 import mycore.MulitpartData;
 import mycore.Request;
+import services.CustomerServlet;
 import test.savePngtest;
 
 public class pred implements Runnable {

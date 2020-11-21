@@ -1,29 +1,16 @@
 package controllers;
 
-import IOC.myautowired;
-import IOC.mycomponent;
-import IOC.mycontroller;
+import IOC.*;
+import mycore.MulitpartData;
 import mycore.Request;
-import servlet.CustomerServlet;
+import services.Constant;
+import services.CustomerServlet;
+import services.savePngtest;
 
 import java.io.IOException;
-import java.io.File;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import IOC.myaction;
-import testAnna.Interceptor;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.FileUtils;
+import java.util.Map;
+import java.util.UUID;
 @mycontroller
 public class uploadController {
 	public String name;

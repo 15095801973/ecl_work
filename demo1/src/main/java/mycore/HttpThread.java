@@ -1,12 +1,11 @@
 package mycore;
 
-import servlet.CustomerServlet;
-
 import java.io.*;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.util.HashMap;
-import test.savePngtest;
+
+import services.CustomerServlet;
 
 public class HttpThread implements Runnable {
     private Socket socket;

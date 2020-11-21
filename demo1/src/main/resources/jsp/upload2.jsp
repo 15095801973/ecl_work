@@ -30,7 +30,7 @@
 							 });  
 						}  
 					</script>
-this is upload2
+this is jsp/upload2.jsp
 <a>可以通过mulitpart/form-data传文件</a>
 <form action="/upload2/post" method="post" enctype="multipart/form-data">
 

@@ -1,11 +1,11 @@
 package mycore;
 
-import servlet.CustomerServlet;
-
 import java.io.*;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.util.HashMap;
+
+import services.CustomerServlet;
 import test.savePngtest;
 
 public class pred2 implements Runnable {
