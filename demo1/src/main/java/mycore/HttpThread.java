@@ -137,6 +137,7 @@ public class HttpThread implements Runnable {
             else if(!request.getHeader().isEmpty() && request.getHeader(0).startsWith("POST"))
                 myServlet.doPost(request);
             reader.close();
+            input.close();
 //            inputStreamB.close();
         } catch (IOException e) {
             e.printStackTrace();

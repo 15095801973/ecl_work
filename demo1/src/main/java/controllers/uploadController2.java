@@ -26,7 +26,7 @@ public class uploadController2 {
 		System.out.println("upload2: get ...\n");
 		
 		//			CustomerServlet.doJson(request, "404");
-		CustomerServlet.doHtml(request, "/upload2.jsp");
+		CustomerServlet.doHtml(request, "/upload2.html");
 	}
 	@myaction(value = "/upload2/post")
 	private void post(Request request) {
@@ -47,7 +47,7 @@ public class uploadController2 {
 					    System.out.println("savedpath = "+pa);
 						try {
 							savePngtest.saveByByte(dataEntry.getValue(), pa);
-							CustomerServlet.doJson(request, "{data:"+filename+"}");
+							CustomerServlet.doJson(request, "{\"data\":\""+filename+"\"}");
 							return;
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
@@ -59,7 +59,7 @@ public class uploadController2 {
 		}
 	}
 		try {
-			CustomerServlet.doJson(request, "upload 2 post failed");
+			CustomerServlet.doJson(request, " {\"msg\":\" error \"}");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

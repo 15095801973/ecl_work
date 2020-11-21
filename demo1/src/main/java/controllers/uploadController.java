@@ -23,7 +23,7 @@ public class uploadController {
 	private void get(Request request) {
 		System.out.println("upload: get ...\n");
 		
-		CustomerServlet.doHtml(request, "/upload.jsp");
+		CustomerServlet.doHtml(request, "/upload.html");
 	}
 	@myaction(value = "/upload/post")
 	private void post(Request request) throws IOException {

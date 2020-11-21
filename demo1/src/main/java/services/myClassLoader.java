@@ -1,8 +1,7 @@
 package services;
 
-import com.basic.core.util.FileUtil;
 import sun.tools.jar.Main;
-
+//import com.basic.core.util.FileUtil;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 import java.io.*;
@@ -40,7 +39,7 @@ public class MyClassLoader extends ClassLoader {
      * @throws java.io.IOException
      */
     @Override
-    protected Class<?> findClass(String name) throws ClassNotFoundException {
+    public  Class<?> findClass(String name) throws ClassNotFoundException {
         byte[] classBytes = null;
         Class<?> clazz = null;
         try {
@@ -78,10 +77,10 @@ public class MyClassLoader extends ClassLoader {
      * @return
      * @throws IOException
      */
-    public static boolean isClassExist(String name) throws IOException {
-        String classPackageName = name.replace(".",File.separator)+".class";
-        return FileUtil.isExists(classPath+classPackageName)?true:false;
-    }
+//    public static boolean isClassExist(String name) throws IOException {
+//        String classPackageName = name.replace(".",File.separator)+".class";
+//        return FileUtil.isExists(classPath+classPackageName)?true:false;
+//    }
 
     /**
      * 指定的类是否存在
@@ -89,10 +88,10 @@ public class MyClassLoader extends ClassLoader {
      * @return
      * @throws IOException
      */
-    public static boolean isJavaExist(String name) throws IOException {
-        String classPackageName = name.replace(".",File.separator)+".java";
-        return FileUtil.isExists(classPath+classPackageName)?true:false;
-    }
+//    public static boolean isJavaExist(String name) throws IOException {
+//        String classPackageName = name.replace(".",File.separator)+".java";
+//        return FileUtil.isExists(classPath+classPackageName)?true:false;
+//    }
 
     /**
      * 编译java类
@@ -137,17 +136,24 @@ public class MyClassLoader extends ClassLoader {
      * @param name 类的全限定包名 不带后缀  例如com.test.Notice  而不要写成com.test.Notice.java
      * @throws java.io.IOException
      */
-    public static Class<?> dynamicLoadClass(String name) throws IOException, ClassNotFoundException {
-        if (!isClassExist(name)){
-            compiler(name);
-        }
-        if(isJavaExist(name)){
-            if(!FileUtil.destroyFile(classPath + name.replace(".",File.separator)+".java")){
-                System.out.println("========================================>>>>删除源文件失败!");
-            }
-        }
-        return Class.forName(name);
-    }
+//    public static Class<?> dynamicLoadClass(String name) throws IOException, ClassNotFoundException {
+//    	boolean log4jIsAvailable;
+//    	try {
+//            log4jIsAvailable = null != Class.forName(name);
+//        } catch (Throwable t) {
+//            log4jIsAvailable = false;
+//        }
+//    	
+//    	if (!log4jIsAvailable){
+//            compiler(name);
+//        }
+//        if(isJavaExist(name)){
+//            if(!FileUtil.destroyFile(classPath + name.replace(".",File.separator)+".java")){
+//                System.out.println("========================================>>>>删除源文件失败!");
+//            }
+//        }
+//        return Class.forName(name);
+//    }
 
     public static void main (String[] args){
         

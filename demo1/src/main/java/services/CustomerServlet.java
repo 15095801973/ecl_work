@@ -171,7 +171,7 @@ public class CustomerServlet {
 //			System.out.println("name = " + name);
 //			Object obj = Class.forName(packageName + name);// 不同于classload,直接获取对象
 			Class<?> clasz = ClassLoader.getSystemClassLoader().loadClass(packageName + name);
-			System.out.println(packageName + name);
+//			System.out.println(packageName + name);
 			// 注意得获取Declared的注解才行
 			Annotation[] ans = clasz.getDeclaredAnnotations();
 			mycontroller aMycontroller = clasz.getDeclaredAnnotation(mycontroller.class);
@@ -375,7 +375,7 @@ public class CustomerServlet {
 		PrintWriter writer = new PrintWriter(new OutputStreamWriter(request.getOutputStream()));
 		OutputStream outputStream = request.getOutputStream();
 		writer.println("HTTP/1.1 200 OK");
-		writer.println("Content-Type: Content-Disposition, attachment;fileName=" + "Button.png");
+		writer.println("Content-Type: Content-Disposition, attachment;fileName=" + file.getName());
 		writer.println("Content-Length:" + byteArrayOutputStream.toByteArray().length);
 		writer.println();
 		writer.flush();
@@ -422,6 +422,7 @@ public class CustomerServlet {
 
 	public static void doJsp(Request request, String jspName) {
 		// TODO Auto-generated method stub
+		jspName = jspName.replace("/", "");
 		System.out.println("doJsp...");
 		String jspPath = System.getProperty("user.dir")+Constant.JSP_DIR + jspName;
 		String javaName =jspName.split("\\.")[0].replace("/", "");
@@ -435,11 +436,18 @@ public class CustomerServlet {
 			System.out.println(jspPath+"+"+jspName);
 			
 			myJSPCompiler.compileJSP(jspPath, jspName);
+			try {
+				MyClassLoader.javac("servlet."+javaName);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		try {
 //			Class.forName(packageName + name);
-			Class<?> clasz = ClassLoader.getSystemClassLoader().loadClass("servlet." + javaName);
+//			Class<?> clasz = ClassLoader.getSystemClassLoader().loadClass("servlet." + javaName);
+			Class<?> clasz = MyClassLoader.getSystemClassLoader().loadClass("servlet." + javaName);
 			Object obj;
 			obj = clasz.newInstance();
 			Response response = new Response();
